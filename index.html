@@ -94,6 +94,9 @@
       .status { display: inline-flex; padding: 6px 8px; border-radius: 999px; font-size: 12px; }
       .status.live { background: rgba(34,197,94,0.16); color: #86efac; }
       .status.pending { background: rgba(245,158,11,0.16); color: #fcd34d; }
+      .status.ready { background: rgba(83,228,255,0.16); color: var(--accent); }
+      .friend-item, .poll-card, .achievement-card, .recommend-card, .chat-bubble { padding: 12px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+      .chat-bubble.self { background: rgba(83,228,255,0.14); border-color: rgba(83,228,255,0.24); }
       .muted { color: var(--muted); }
       .footer { padding: 24px 0 40px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
       .toast-root { position: fixed; right: 16px; bottom: 16px; display: grid; gap: 10px; z-index: 100; }
@@ -160,6 +163,16 @@
       </section>
 
       <section class="section">
+        <div class="section-head"><h2>친구 · 클랜 · 채팅</h2><span>클랜 모집 · 친구 요청 · 실시간 채팅</span></div>
+        <div class="grid grid-3" id="social"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>투표 · 업적 · AI 추천</h2><span>설문 · 도전과제 · 추천 알고리즘</span></div>
+        <div class="grid grid-3" id="extras"></div>
+      </section>
+
+      <section class="section">
         <div class="section-head"><h2>상점</h2><span>포인트 상점 · 크리에이터 상품 · 패밀리 혜택</span></div>
         <div class="grid grid-3" id="shop"></div>
       </section>
@@ -208,6 +221,32 @@
           { id: 's2', name: '클럽 배지', price: 220, type: 'reward' },
           { id: 's3', name: '시즌 패스 업그레이드', price: 350, type: 'pass' }
         ],
+        friends: [
+          { id: 'f1', name: 'Rin', status: '방금 매치 완료', level: 98, online: true },
+          { id: 'f2', name: 'Jin', status: '공략 공유 중', level: 91, online: false },
+          { id: 'f3', name: 'Mina', status: '토너먼트 예선 중', level: 87, online: true }
+        ],
+        clan: { name: 'Neon Squad', members: 148, rank: 'Gold', motto: '함께 성장하는 클랜' },
+        polls: [
+          { id: 'poll1', question: '다음 시즌 핵심 기능은?', options: [{ id: 'o1', label: '클랜 전투', votes: 14 }, { id: 'o2', label: 'AI 코치', votes: 11 }, { id: 'o3', label: '리워드 뽑기', votes: 9 }] }
+        ],
+        achievements: [
+          { id: 'a1', title: '첫 게시글', desc: '커뮤니티에 첫 글 작성', reward: '배지 +50P', unlocked: true },
+          { id: 'a2', title: '매일 출석', desc: '7일 연속 로그인', reward: '코스튬 프리셋', unlocked: false },
+          { id: 'a3', title: '친구 3명', desc: '친구를 3명 추가', reward: '프로필 프레임', unlocked: false }
+        ],
+        announcements: [
+          { id: 'n1', title: '신규 시즌 시작', body: '보상과 이벤트가 업데이트됩니다.' },
+          { id: 'n2', title: '클랜 배틀 오픈', body: '이번 주부터 클랜 전투가 시작됩니다.' }
+        ],
+        aiRecommendations: [
+          { id: 'r1', title: '클럽 매치 추천', body: '당신의 최근 활동 패턴으로 가장 잘 맞는 매치입니다.' },
+          { id: 'r2', title: '공략 추천', body: '오늘은 에이전트 빌드에 집중해보세요.' }
+        ],
+        chatMessages: [
+          { id: 'm1', author: 'Rin', body: '오늘 매치 기대돼요!' },
+          { id: 'm2', author: 'Nova', body: '리워드 뽑기 이벤트 참여해요.' }
+        ],
         currentUserId: null,
         ui: { theme: 'dark', notifications: true, compact: false, searchQuery: '' }
       };
@@ -226,6 +265,13 @@
             events: parsed.events || JSON.parse(JSON.stringify(defaultState.events)),
             tournaments: parsed.tournaments || JSON.parse(JSON.stringify(defaultState.tournaments)),
             storeItems: parsed.storeItems || JSON.parse(JSON.stringify(defaultState.storeItems)),
+            friends: parsed.friends || JSON.parse(JSON.stringify(defaultState.friends)),
+            clan: parsed.clan || JSON.parse(JSON.stringify(defaultState.clan)),
+            polls: parsed.polls || JSON.parse(JSON.stringify(defaultState.polls)),
+            achievements: parsed.achievements || JSON.parse(JSON.stringify(defaultState.achievements)),
+            announcements: parsed.announcements || JSON.parse(JSON.stringify(defaultState.announcements)),
+            aiRecommendations: parsed.aiRecommendations || JSON.parse(JSON.stringify(defaultState.aiRecommendations)),
+            chatMessages: parsed.chatMessages || JSON.parse(JSON.stringify(defaultState.chatMessages)),
             ui: { ...JSON.parse(JSON.stringify(defaultState.ui)), ...(parsed.ui || {}) },
             currentUserId: parsed.currentUserId || null
           };
@@ -365,6 +411,71 @@
           <div class="card" style="padding: 16px;"><h3>친구 활동</h3><div class="divider"></div><div class="line"><span>Aiko</span><strong>새 공략 등록</strong></div><div class="line"><span>Nova</span><strong>토너먼트 등록</strong></div><div class="line"><span>Rin</span><strong>퀘스트 완료</strong></div></div>
         `;
       }
+      function renderSocial() {
+        const container = document.getElementById('social');
+        container.innerHTML = `
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>친구 목록</h3><span>온라인 상태</span></div>
+            <div class="stack">${state.friends.map((friend) => `
+              <div class="friend-item">
+                <div class="line"><strong>${escapeHtml(friend.name)}</strong><span class="status ${friend.online ? 'live' : 'pending'}">${friend.online ? '온라인' : '오프라인'}</span></div>
+                <p class="muted" style="margin-top: 8px;">${escapeHtml(friend.status)}</p>
+                <div class="line"><span>Lv ${friend.level}</span><button class="inline-btn" data-follow-friend="${friend.id}">친구 추가</button></div>
+              </div>
+            `).join('')}</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>클랜 정보</h3><span>${escapeHtml(state.clan.rank)}</span></div>
+            <h4>${escapeHtml(state.clan.name)}</h4>
+            <p class="muted" style="margin-top: 8px;">${escapeHtml(state.clan.motto)}</p>
+            <div class="line"><span>멤버 ${state.clan.members}명</span><button class="inline-btn" data-join-clan>클랜 가입</button></div>
+            <div class="divider"></div>
+            <div class="stack">${state.announcements.map((item) => `<div class="mini-card"><strong>${escapeHtml(item.title)}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(item.body)}</p></div>`).join('')}</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>실시간 채팅</h3><span>소통</span></div>
+            <div class="stack">${state.chatMessages.map((message) => `
+              <div class="chat-bubble ${message.author === 'Nova' ? 'self' : ''}">
+                <strong>${escapeHtml(message.author)}</strong>
+                <p class="muted" style="margin-top: 4px;">${escapeHtml(message.body)}</p>
+              </div>
+            `).join('')}</div>
+            <form id="chat-form" class="stack" style="margin-top: 10px;">
+              <input class="input" name="message" placeholder="메시지 입력" required />
+              <button class="btn btn-secondary" type="submit">전송</button>
+            </form>
+          </div>
+        `;
+      }
+      function renderExtras() {
+        const container = document.getElementById('extras');
+        container.innerHTML = `
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>투표</h3><span>커뮤니티 선호도</span></div>
+            <div class="stack">${state.polls.map((poll) => `
+              <div class="poll-card">
+                <strong>${escapeHtml(poll.question)}</strong>
+                <div class="stack" style="margin-top: 10px;">${poll.options.map((option) => `<button class="inline-btn" data-vote-poll="${poll.id}:${option.id}">${escapeHtml(option.label)} · ${option.votes}표</button>`).join('')}</div>
+              </div>
+            `).join('')}</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>업적</h3><span>도전과제</span></div>
+            <div class="stack">${state.achievements.map((achievement) => `
+              <div class="achievement-card">
+                <div class="line"><strong>${escapeHtml(achievement.title)}</strong><span class="status ${achievement.unlocked ? 'ready' : 'pending'}">${achievement.unlocked ? '보상 가능' : '대기'}</span></div>
+                <p class="muted" style="margin-top: 8px;">${escapeHtml(achievement.desc)}</p>
+                <div class="line"><span>${escapeHtml(achievement.reward)}</span><button class="inline-btn" data-claim-achievement="${achievement.id}">${achievement.unlocked ? '수령' : '잠김'}</button></div>
+              </div>
+            `).join('')}</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>AI 추천</h3><span>맞춤형 추천</span></div>
+            <div class="stack">${state.aiRecommendations.map((item) => `<div class="recommend-card"><strong>${escapeHtml(item.title)}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(item.body)}</p></div>`).join('')}</div>
+            <button class="btn btn-secondary" style="margin-top: 10px;" data-refresh-ai>추천 새로 받기</button>
+          </div>
+        `;
+      }
       function renderShop() {
         const container = document.getElementById('shop');
         container.innerHTML = state.storeItems.map((item) => `
@@ -387,6 +498,8 @@
         renderCommunity();
         renderEvents();
         renderCalendar();
+        renderSocial();
+        renderExtras();
         renderShop();
         renderStats();
         saveState();
@@ -437,7 +550,7 @@
         renderApp();
       }
       function handleClick(event) {
-        const target = event.target.closest('button, [data-logout], [data-theme-toggle], [data-join-game], [data-claim-quest], [data-join-event], [data-buy-item], [data-reaction], [data-bookmark]');
+        const target = event.target.closest('button, [data-logout], [data-theme-toggle], [data-join-game], [data-claim-quest], [data-join-event], [data-buy-item], [data-reaction], [data-bookmark], [data-vote-poll], [data-claim-achievement], [data-follow-friend], [data-join-clan], [data-refresh-ai]');
         if (!target) return;
         if (target.matches('[data-logout]')) { state.currentUserId = null; showToast('로그아웃되었습니다.'); renderApp(); return; }
         if (target.matches('[data-theme-toggle]')) { state.ui.theme = state.ui.theme === 'dark' ? 'light' : 'dark'; showToast('테마가 변경되었습니다.'); renderApp(); return; }
@@ -447,6 +560,11 @@
         if (target.matches('[data-buy-item]')) { const user = getCurrentUser(); if (!user) { showToast('로그인 후 구매할 수 있습니다.'); return; } const item = state.storeItems.find((entry) => entry.id === target.dataset.buyItem); if (!item) return; if (user.points < item.price) { showToast('포인트가 부족합니다.'); return; } user.points -= item.price; user.inventory.push(item.name); showToast(`${item.name}을 구매했습니다.`); renderApp(); return; }
         if (target.matches('[data-reaction]')) { const post = state.posts.find((item) => item.id === target.dataset.postId); if (!post) return; if (target.dataset.reaction === 'like') post.likes += 1; else post.dislikes += 1; renderApp(); return; }
         if (target.matches('[data-bookmark]')) { const post = state.posts.find((item) => item.id === target.dataset.bookmark); if (!post) return; post.bookmarked = !post.bookmarked; showToast(post.bookmarked ? '저장되었습니다.' : '저장 해제되었습니다.'); renderApp(); return; }
+        if (target.matches('[data-vote-poll]')) { const [pollId, optionId] = target.dataset.votePoll.split(':'); const poll = state.polls.find((item) => item.id === pollId); if (!poll) return; const option = poll.options.find((item) => item.id === optionId); if (option) { option.votes += 1; showToast('투표가 반영되었습니다.'); renderApp(); } return; }
+        if (target.matches('[data-claim-achievement]')) { const achievement = state.achievements.find((item) => item.id === target.dataset.claimAchievement); if (!achievement) return; if (!achievement.unlocked) { showToast('아직 조건을 만족하지 않았습니다.'); return; } const user = getCurrentUser(); if (!user) { showToast('로그인 후 수령할 수 있습니다.'); return; } user.points += 50; achievement.unlocked = false; showToast(`${achievement.title} 보상을 받았습니다.`); renderApp(); return; }
+        if (target.matches('[data-follow-friend]')) { const user = getCurrentUser(); if (!user) { showToast('로그인 후 친구 요청을 보낼 수 있습니다.'); return; } showToast('친구 요청이 전송되었습니다.'); return; }
+        if (target.matches('[data-join-clan]')) { const user = getCurrentUser(); if (!user) { showToast('로그인 후 클랜에 가입할 수 있습니다.'); return; } showToast('클랜 가입 요청이 접수되었습니다.'); return; }
+        if (target.matches('[data-refresh-ai]')) { state.aiRecommendations.unshift({ id: `r${Date.now()}`, title: '새 추천', body: '오늘의 맞춤 추천이 갱신되었습니다.' }); showToast('추천이 갱신되었습니다.'); renderApp(); return; }
       }
       function handleSubmit(event) {
         if (event.target.id === 'login-form') { handleLogin(event); return; }
@@ -454,6 +572,7 @@
         if (event.target.id === 'profile-form') { handleProfile(event); return; }
         if (event.target.id === 'post-form') { handlePost(event); return; }
         if (event.target.matches('[data-comment-form]')) { event.preventDefault(); const user = getCurrentUser(); if (!user) { showToast('로그인 후 댓글을 남길 수 있습니다.'); return; } const post = state.posts.find((item) => item.id === event.target.dataset.commentForm); if (!post) return; post.comments.push({ id: `c${Date.now()}`, authorId: user.id, body: event.target.comment.value.trim() }); event.target.reset(); showToast('댓글이 등록되었습니다.'); renderApp(); }
+        if (event.target.id === 'chat-form') { event.preventDefault(); const user = getCurrentUser(); if (!user) { showToast('로그인 후 채팅할 수 있습니다.'); return; } state.chatMessages.push({ id: `m${Date.now()}`, author: user.displayName, body: event.target.message.value.trim() }); event.target.reset(); renderApp(); }
       }
       function handleInput(event) {
         if (event.target.id === 'search-posts') {
