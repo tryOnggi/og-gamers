@@ -113,69 +113,12 @@
           <div class="brand-mark">옹</div>
           <div>ONGI<br /><span class="muted" style="font-size:12px;font-weight:600;">게임 커뮤니티 · 이벤트 · 보상 · 상점</span></div>
         </a>
-        <nav class="nav">
-          <a href="#games">게임</a>
-          <a href="#community">커뮤니티</a>
-          <a href="#events">이벤트</a>
-          <a href="#shop">상점</a>
-          <a href="#profile">프로필</a>
-        </nav>
+        <nav class="nav" id="nav-links"></nav>
       </div>
     </header>
 
     <main class="shell" id="top">
-      <section class="hero">
-        <div class="card hero-main">
-          <div class="eyebrow">● ONGI RE:DESIGNED</div>
-          <h1>게임 플레이를 더 재밌게 만드는 커뮤니티를 새로 열었습니다.</h1>
-          <p class="lead">로그인, 게시글, 댓글, 북마크, 퀘스트, 토너먼트, 보상 상점, 이벤트 참여까지 한 페이지에서 실제로 동작합니다. 관리자 패널 없이 더 몰입감 있는 경험을 제공합니다.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#community">커뮤니티 둘러보기</a>
-            <a class="btn btn-secondary" href="#events">이벤트 참여</a>
-          </div>
-          <div class="stats">
-            <div class="stat-box"><div class="muted">오늘 접속</div><strong id="stat-visits">0</strong></div>
-            <div class="stat-box"><div class="muted">활성 유저</div><strong id="stat-users">0</strong></div>
-            <div class="stat-box"><div class="muted">완료 퀘스트</div><strong id="stat-quests">0</strong></div>
-          </div>
-        </div>
-        <div class="card" id="profile" style="padding: 18px; display:grid; gap: 12px;"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>추천 게임</h2><span>실시간 추천 · 공략 · 매치</span></div>
-        <div class="grid grid-3" id="games"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>커뮤니티</h2><span>포스트 · 댓글 · 북마크 · 반응</span></div>
-        <div class="grid grid-2" id="community"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>퀘스트 & 배틀패스</h2><span>일일 미션 · 업적 · 리워드</span></div>
-        <div class="grid grid-2" id="events"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>토너먼트 & 일정</h2><span>대회 · 시즌 · 캘린더</span></div>
-        <div class="grid grid-3" id="calendar"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>친구 · 클랜 · 채팅</h2><span>클랜 모집 · 친구 요청 · 실시간 채팅</span></div>
-        <div class="grid grid-3" id="social"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>투표 · 업적 · AI 추천</h2><span>설문 · 도전과제 · 추천 알고리즘</span></div>
-        <div class="grid grid-3" id="extras"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>상점</h2><span>포인트 상점 · 크리에이터 상품 · 패밀리 혜택</span></div>
-        <div class="grid grid-3" id="shop"></div>
-      </section>
+      <div id="page-content"></div>
     </main>
 
     <footer class="shell footer">
@@ -186,20 +129,33 @@
     <div class="toast-root" id="toast-root"></div>
 
     <script>
-      const STORAGE_KEY = 'ongi-redesign-v1';
+      const STORAGE_KEY = 'ongi-redesign-v2';
+      const pageNames = [
+        { key: 'home', label: '홈' },
+        { key: 'community', label: '커뮤니티' },
+        { key: 'games', label: '게임' },
+        { key: 'events', label: '이벤트' },
+        { key: 'shop', label: '상점' },
+        { key: 'profile', label: '프로필' }
+      ];
       const defaultState = {
         users: [
           { id: 'u1', email: 'admin@ongi.com', password: '1234', username: 'Nova', displayName: 'Nova', role: 'admin', plan: 'pro', points: 1240, bio: '공략과 이벤트 운영을 사랑해요.', status: '오늘도 파밍 중', avatar: '🎮', badges: ['공략왕', '이벤트 운영자'], favorites: ['Valorant', 'Genshin'], achievements: ['첫 가입', '퀘스트 마스터'], inventory: ['네온 테마', '배지'] },
           { id: 'u2', email: 'user@ongi.com', password: '1234', username: 'Aiko', displayName: 'Aiko', role: 'user', plan: 'plus', points: 560, bio: '새 빌드와 레이아웃을 탐험 중이에요.', status: '새 시즌 준비', avatar: '🕹️', badges: ['질문왕'], favorites: ['Fortnite'], achievements: ['첫 게시글'], inventory: ['이모지'] }
         ],
         posts: [
-          { id: 'p1', authorId: 'u1', title: '신규 시즌 공략 정리', body: '초보자도 바로 따라 할 수 있는 공략 루틴을 정리해봤어요.', category: 'guide', tags: ['Guide','Season','Tips'], likes: 24, dislikes: 2, views: 3200, bookmarked: false, comments: [{ id: 'c1', authorId: 'u2', body: '좋은 정리네요!' }] },
-          { id: 'p2', authorId: 'u2', title: '이번 주 이벤트 미리보기', body: '토너먼트와 리워드 일정이 바뀌었어요. 참여해보세요.', category: 'event', tags: ['Event','Reward'], likes: 16, dislikes: 0, views: 1800, bookmarked: true, comments: [] }
+          { id: 'p1', authorId: 'u1', title: '신규 시즌 공략 정리', body: '초보자도 바로 따라 할 수 있는 공략 루틴을 정리해봤어요.', category: 'guide', tags: ['Guide','Season','Tips'], likes: 24, dislikes: 2, views: 3200, bookmarked: false, pinned: true, comments: [{ id: 'c1', authorId: 'u2', body: '좋은 정리네요!' }] },
+          { id: 'p2', authorId: 'u2', title: '이번 주 이벤트 미리보기', body: '토너먼트와 리워드 일정이 바뀌었어요. 참여해보세요.', category: 'event', tags: ['Event','Reward'], likes: 16, dislikes: 0, views: 1800, bookmarked: true, pinned: false, comments: [] },
+          { id: 'p3', authorId: 'u2', title: '클랜 멤버 구합니다', body: '이번 시즌 같이 랭크를 올릴 클랜원을 찾고 있어요.', category: 'community', tags: ['Clan','Recruit'], likes: 11, dislikes: 1, views: 980, bookmarked: false, pinned: false, comments: [{ id: 'c2', authorId: 'u1', body: '저도 참여 가능할까요?' }] },
+          { id: 'p4', authorId: 'u1', title: '에이전트 빌드 질문', body: '초보자가 가장 많이 헷갈리는 세팅 포인트를 공유해 주세요.', category: 'question', tags: ['Question','Build'], likes: 9, dislikes: 0, views: 760, bookmarked: false, pinned: false, comments: [] },
+          { id: 'p5', authorId: 'u2', title: '패치 노트 요약', body: '핵심 변경점만 쏙쏙 뽑아봤습니다.', category: 'patch', tags: ['Patch','Meta'], likes: 21, dislikes: 0, views: 1500, bookmarked: false, pinned: false, comments: [{ id: 'c3', authorId: 'u1', body: '정리 잘 봤어요.' }] },
+          { id: 'p6', authorId: 'u1', title: '오늘의 스크린샷 공유', body: '오늘의 플레이를 함께 보면서 이야기해요.', category: 'clip', tags: ['Clip','Screenshot'], likes: 13, dislikes: 0, views: 890, bookmarked: true, pinned: false, comments: [] }
         ],
         games: [
           { id: 'g1', title: 'Valorant', genre: 'FPS', platform: 'PC', rating: 4.8, description: '전략형 FPS 루틴과 에이전트 추천', tags: ['공략','매치','클럽'] },
           { id: 'g2', title: 'Genshin Impact', genre: 'RPG', platform: 'Mobile/PC', rating: 4.7, description: '파티 빌드와 이벤트 공략', tags: ['파티','이벤트','빌드'] },
-          { id: 'g3', title: 'Fortnite', genre: 'Battle Royale', platform: 'PC/Console', rating: 4.6, description: '시즌 핫스팟과 장비 메타', tags: ['메타','모드','랭킹'] }
+          { id: 'g3', title: 'Fortnite', genre: 'Battle Royale', platform: 'PC/Console', rating: 4.6, description: '시즌 핫스팟과 장비 메타', tags: ['메타','모드','랭킹'] },
+          { id: 'g4', title: 'League of Legends', genre: 'MOBA', platform: 'PC', rating: 4.9, description: '챔피언 빌드와 클라이밍 공략', tags: ['챔피언','랭크','팁'] }
         ],
         quests: [
           { id: 'q1', title: '출석 체크', reward: '+200P', status: 'ready', desc: '오늘 첫 로그인하면 포인트를 받습니다.' },
@@ -219,7 +175,8 @@
         storeItems: [
           { id: 's1', name: '네온 프로필 배경', price: 180, type: 'cosmetic' },
           { id: 's2', name: '클럽 배지', price: 220, type: 'reward' },
-          { id: 's3', name: '시즌 패스 업그레이드', price: 350, type: 'pass' }
+          { id: 's3', name: '시즌 패스 업그레이드', price: 350, type: 'pass' },
+          { id: 's4', name: 'AI 코치 패스', price: 420, type: 'perk' }
         ],
         friends: [
           { id: 'f1', name: 'Rin', status: '방금 매치 완료', level: 98, online: true },
@@ -245,10 +202,11 @@
         ],
         chatMessages: [
           { id: 'm1', author: 'Rin', body: '오늘 매치 기대돼요!' },
-          { id: 'm2', author: 'Nova', body: '리워드 뽑기 이벤트 참여해요.' }
+          { id: 'm2', author: 'Nova', body: '리워드 뽑기 이벤트 참여해요.' },
+          { id: 'm3', author: 'Mina', body: '클랜 모집글 보고 들어왔어요.' }
         ],
         currentUserId: null,
-        ui: { theme: 'dark', notifications: true, compact: false, searchQuery: '' }
+        ui: { theme: 'dark', notifications: true, compact: false, searchQuery: '', currentPage: 'home', feedFilter: 'all' }
       };
       const state = loadState();
       function loadState() {
@@ -285,224 +243,314 @@
       function getUserName(userId) { const u = state.users.find((user) => user.id === userId); return u ? u.displayName : '익명'; }
       function showToast(message) { const root = document.getElementById('toast-root'); const toast = document.createElement('div'); toast.className = 'toast'; toast.textContent = message; root.appendChild(toast); setTimeout(() => toast.remove(), 1800); }
       function applyTheme() { document.body.classList.toggle('light', state.ui.theme === 'light'); }
-      function renderProfileCard() {
-        const panel = document.getElementById('profile');
+      function renderNav() {
+        const nav = document.getElementById('nav-links');
+        if (!nav) return;
+        nav.innerHTML = pageNames.map((page) => `<a href="#${page.key}" data-nav="${page.key}" class="${state.ui.currentPage === page.key ? 'active' : ''}">${page.label}</a>`).join('');
+      }
+      function renderHomePage() {
         const user = getCurrentUser();
-        if (!user) {
-          panel.innerHTML = `
-            <div class="section-head"><h3>로그인 / 회원가입</h3><span>로컬 저장</span></div>
-            <form id="login-form" class="stack">
-              <input class="input" name="email" placeholder="이메일" required />
-              <input class="input" name="password" type="password" placeholder="비밀번호" required />
-              <button class="btn btn-primary" type="submit">로그인</button>
-            </form>
-            <div class="divider"></div>
-            <form id="register-form" class="stack">
-              <input class="input" name="username" placeholder="닉네임" required />
-              <input class="input" name="email" placeholder="이메일" required />
-              <input class="input" name="password" type="password" placeholder="비밀번호" required />
-              <button class="btn btn-secondary" type="submit">회원가입</button>
-            </form>
-          `;
-          return;
-        }
-        panel.innerHTML = `
-          <div class="section-head"><h3>내 프로필</h3><span>${escapeHtml(user.plan.toUpperCase())}</span></div>
-          <div class="line"><div style="display:flex;gap:10px;align-items:center;"><div class="avatar">${escapeHtml(user.avatar)}</div><div><strong>${escapeHtml(user.displayName)}</strong><div class="muted">${escapeHtml(user.status)}</div></div></div><span class="pill">${user.points}P</span></div>
-          <p class="muted" style="margin-top:10px;">${escapeHtml(user.bio)}</p>
-          <div class="chip-list" style="margin-top:10px;">${user.badges.map((badge) => `<span class="chip active">${escapeHtml(badge)}</span>`).join('')}</div>
-          <div class="actions-inline">
-            <button class="inline-btn" data-logout>로그아웃</button>
-            <button class="inline-btn" data-theme-toggle>테마 전환</button>
-          </div>
-          <div class="divider"></div>
-          <form id="profile-form" class="stack">
-            <input class="input" name="status" value="${escapeHtml(user.status)}" />
-            <textarea name="bio">${escapeHtml(user.bio)}</textarea>
-            <button class="btn btn-secondary" type="submit">프로필 저장</button>
-          </form>
+        return `
+          <section class="hero">
+            <div class="card hero-main">
+              <div class="eyebrow">● ONGI COMMUNITY</div>
+              <h1>진짜 유저들이 모이는 게임 커뮤니티로 새로 열렸습니다.</h1>
+              <p class="lead">로그인, 게시글, 댓글, 친구, 클랜, 이벤트, 상점까지 실제 서비스처럼 동작하는 한 페이지 커뮤니티입니다. 포스트와 기능을 더 많이 넣어 현실감 있게 구성했습니다.</p>
+              <div class="actions">
+                <a class="btn btn-primary" href="#community" data-nav="community">커뮤니티 둘러보기</a>
+                <a class="btn btn-secondary" href="#events" data-nav="events">이벤트 참여</a>
+              </div>
+              <div class="stats">
+                <div class="stat-box"><div class="muted">오늘 접속</div><strong>${(state.users.length * 1200 + 8400).toLocaleString()}</strong></div>
+                <div class="stat-box"><div class="muted">활성 유저</div><strong>${state.users.length}</strong></div>
+                <div class="stat-box"><div class="muted">완료 퀘스트</div><strong>${state.quests.filter((q) => q.status === 'done').length}</strong></div>
+              </div>
+            </div>
+            <div class="card" style="padding: 18px; display:grid; gap: 12px;">
+              <div class="section-head"><h3>내 프로필</h3><span>빠른 진입</span></div>
+              ${user ? `
+                <div class="line"><div style="display:flex;gap:10px;align-items:center;"><div class="avatar">${escapeHtml(user.avatar)}</div><div><strong>${escapeHtml(user.displayName)}</strong><div class="muted">${escapeHtml(user.status)}</div></div></div><span class="pill">${user.points}P</span></div>
+                <p class="muted" style="margin-top: 8px;">${escapeHtml(user.bio)}</p>
+                <div class="chip-list" style="margin-top: 6px;">${user.badges.map((badge) => `<span class="chip active">${escapeHtml(badge)}</span>`).join('')}</div>
+              ` : `<div class="muted">로그인하면 프로필, 포인트, 친구, 클랜 상태를 한 번에 확인할 수 있습니다.</div>`}
+              <div class="actions-inline">
+                <a class="btn btn-primary" href="#profile" data-nav="profile">${user ? '프로필 관리' : '로그인 / 가입'}</a>
+                <a class="btn btn-secondary" href="#shop" data-nav="shop">상점 열기</a>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><h2>추천 게임</h2><span>인기 게임 · 공략 · 매치</span></div>
+            <div class="grid grid-3">
+              ${state.games.map((game) => `
+                <div class="card" style="padding: 16px;">
+                  <div class="thumb"></div>
+                  <h3>${escapeHtml(game.title)}</h3>
+                  <div class="meta">${escapeHtml(game.genre)} · ${escapeHtml(game.platform)} · 평점 ${game.rating}</div>
+                  <p class="muted" style="margin-top: 8px;">${escapeHtml(game.description)}</p>
+                  <div class="tag-row">${game.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+                  <div class="actions-inline"><button class="btn btn-primary" data-join-game="${game.id}">매치 참여</button></div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><h2>실시간 커뮤니티 요약</h2><span>핫토픽 · 공략 · 이벤트</span></div>
+            <div class="grid grid-3">
+              <div class="card" style="padding: 16px;"><h3>인기 포스트</h3><div class="divider"></div>${state.posts.slice(0,3).map((post)=>`<div class="line"><span>${escapeHtml(post.title)}</span><strong>${post.likes}👍</strong></div>`).join('')}</div>
+              <div class="card" style="padding: 16px;"><h3>이번 주 이벤트</h3><div class="divider"></div>${state.events.map((event)=>`<div class="line"><span>${escapeHtml(event.title)}</span><span class="status ${event.status === 'live' ? 'live' : 'pending'}">${event.status === 'live' ? 'LIVE' : '대기'}</span></div>`).join('')}</div>
+              <div class="card" style="padding: 16px;"><h3>클랜 공지</h3><div class="divider"></div>${state.announcements.map((item)=>`<div class="line"><span>${escapeHtml(item.title)}</span><strong>NEW</strong></div>`).join('')}</div>
+            </div>
+          </section>
         `;
       }
-      function renderGames() {
-        const container = document.getElementById('games');
-        container.innerHTML = state.games.map((game) => `
-          <div class="card" style="padding: 16px;">
-            <div class="thumb"></div>
-            <h3>${escapeHtml(game.title)}</h3>
-            <div class="meta">${escapeHtml(game.genre)} · ${escapeHtml(game.platform)} · 평점 ${game.rating}</div>
-            <p class="muted" style="margin-top: 8px;">${escapeHtml(game.description)}</p>
-            <div class="tag-row">${game.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-            <div class="actions-inline"><button class="btn btn-primary" data-join-game="${game.id}">매치 참여</button></div>
-          </div>
-        `).join('');
-      }
-      function renderCommunity() {
-        const composer = document.getElementById('community');
+      function renderCommunityPage() {
         const user = getCurrentUser();
         const filteredPosts = state.posts.filter((post) => {
           const q = state.ui.searchQuery.trim().toLowerCase();
-          if (!q) return true;
+          const filter = state.ui.feedFilter;
+          const matchesFilter = filter === 'all' || post.category === filter;
           const hay = `${post.title} ${post.body} ${post.tags.join(' ')} ${getUserName(post.authorId)}`.toLowerCase();
-          return hay.includes(q);
+          const matchesQuery = !q || hay.includes(q);
+          return matchesFilter && matchesQuery;
         });
-        composer.innerHTML = `
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>게시글 작성</h3><span>${user ? '로그인됨' : '로그인 필요'}</span></div>
-            <form id="post-form" class="stack">
-              <input class="input" name="title" placeholder="제목" required />
-              <textarea name="body" placeholder="내용" required></textarea>
-              <input class="input" name="tags" placeholder="태그를 쉼표로 구분" />
-              <button class="btn btn-primary" type="submit">게시글 등록</button>
-            </form>
-            <div class="divider"></div>
-            <input class="input" id="search-posts" placeholder="게시글 검색" value="${escapeHtml(state.ui.searchQuery)}" />
-          </div>
-          <div class="stack">
-            ${filteredPosts.slice().reverse().map((post) => `
-              <div class="feed-card">
-                <div class="line"><strong>${escapeHtml(post.title)}</strong><span>${new Date(post.createdAt || '2026-07-08T00:00:00.000Z').toLocaleString('ko-KR')}</span></div>
-                <p class="muted" style="margin-top: 8px;">${escapeHtml(post.body)}</p>
-                <div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-                <div class="actions-inline">
-                  <button class="inline-btn" data-reaction="like" data-post-id="${post.id}">👍 ${post.likes}</button>
-                  <button class="inline-btn" data-reaction="dislike" data-post-id="${post.id}">👎 ${post.dislikes}</button>
-                  <button class="inline-btn" data-bookmark="${post.id}">${post.bookmarked ? '🔖 저장됨' : '🔖 저장'}</button>
-                </div>
+        return `
+          <section class="section">
+            <div class="section-head"><h2>커뮤니티 피드</h2><span>실제 커뮤니티 느낌 · 포스트 · 댓글 · 토론</span></div>
+            <div class="grid grid-2">
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>포스트 작성</h3><span>${user ? '로그인됨' : '로그인 필요'}</span></div>
+                <form id="post-form" class="stack">
+                  <input class="input" name="title" placeholder="제목" required />
+                  <textarea name="body" placeholder="내용" required></textarea>
+                  <input class="input" name="tags" placeholder="태그를 쉼표로 구분" />
+                  <button class="btn btn-primary" type="submit">게시글 등록</button>
+                </form>
                 <div class="divider"></div>
-                <div class="stack">
-                  ${post.comments.map((comment) => `<div class="panel"><strong>${escapeHtml(getUserName(comment.authorId))}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(comment.body)}</p></div>`).join('')}
+                <input class="input" id="search-posts" placeholder="게시글 검색" value="${escapeHtml(state.ui.searchQuery)}" />
+                <div class="chip-list" style="margin-top: 10px;">
+                  ${['all','guide','event','question','patch','community','clip'].map((key) => `<button class="chip ${state.ui.feedFilter === key ? 'active' : ''}" data-feed-filter="${key}">${key === 'all' ? '전체' : key}</button>`).join('')}
                 </div>
-                <form class="stack" style="margin-top: 10px;" data-comment-form="${post.id}">
-                  <textarea name="comment" placeholder="댓글을 남겨보세요" required></textarea>
-                  <button class="btn btn-secondary" type="submit">댓글 등록</button>
+              </div>
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>핫토픽</h3><span>실시간 인기</span></div>
+                <div class="stack">
+                  <div class="mini-card"><strong>#SeasonGuide</strong><p class="muted" style="margin-top: 6px;">새 시즌 공략이 폭발적으로 조회되고 있습니다.</p></div>
+                  <div class="mini-card"><strong>#ClanRecruit</strong><p class="muted" style="margin-top: 6px;">클랜 멤버를 찾는 글이 올라오고 있습니다.</p></div>
+                  <div class="mini-card"><strong>#PatchNote</strong><p class="muted" style="margin-top: 6px;">패치 변화에 대한 토론이 활발합니다.</p></div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><h2>최근 포스트</h2><span>${filteredPosts.length}개</span></div>
+            <div class="grid">
+              ${filteredPosts.slice().reverse().map((post) => `
+                <div class="card" style="padding: 16px;">
+                  <div class="line"><strong>${escapeHtml(post.title)}</strong><span>${new Date(post.createdAt || '2026-07-08T00:00:00.000Z').toLocaleString('ko-KR')}</span></div>
+                  ${post.pinned ? '<div class="pill" style="margin-top:8px;">고정 포스트</div>' : ''}
+                  <p class="muted" style="margin-top: 8px;">${escapeHtml(post.body)}</p>
+                  <div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+                  <div class="actions-inline">
+                    <button class="inline-btn" data-reaction="like" data-post-id="${post.id}">👍 ${post.likes}</button>
+                    <button class="inline-btn" data-reaction="dislike" data-post-id="${post.id}">👎 ${post.dislikes}</button>
+                    <button class="inline-btn" data-bookmark="${post.id}">${post.bookmarked ? '🔖 저장됨' : '🔖 저장'}</button>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="stack">
+                    ${post.comments.map((comment) => `<div class="panel"><strong>${escapeHtml(getUserName(comment.authorId))}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(comment.body)}</p></div>`).join('')}
+                  </div>
+                  <form class="stack" style="margin-top: 10px;" data-comment-form="${post.id}">
+                    <textarea name="comment" placeholder="댓글을 남겨보세요" required></textarea>
+                    <button class="btn btn-secondary" type="submit">댓글 등록</button>
+                  </form>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      }
+      function renderGamesPage() {
+        return `
+          <section class="section">
+            <div class="section-head"><h2>게임 라이브러리</h2><span>공략 · 이벤트 · 매치</span></div>
+            <div class="grid grid-3">
+              ${state.games.map((game) => `
+                <div class="card" style="padding: 16px;">
+                  <div class="thumb"></div>
+                  <h3>${escapeHtml(game.title)}</h3>
+                  <div class="meta">${escapeHtml(game.genre)} · ${escapeHtml(game.platform)} · 평점 ${game.rating}</div>
+                  <p class="muted" style="margin-top: 8px;">${escapeHtml(game.description)}</p>
+                  <div class="tag-row">${game.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+                  <div class="actions-inline"><button class="btn btn-primary" data-join-game="${game.id}">매치 참여</button></div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><h2>오늘의 추천 공략</h2><span>유저가 많이 찾는 루틴</span></div>
+            <div class="grid grid-2">
+              <div class="card" style="padding: 16px;"><h3>Valorant 실전 루틴</h3><p class="muted" style="margin-top: 8px;">에이전트 선택부터 세팅까지 커뮤니티에서 가장 많이 공유된 루틴을 모아봤어요.</p></div>
+              <div class="card" style="padding: 16px;"><h3>League 공략 클립</h3><p class="muted" style="margin-top: 8px;">클립과 패치 노트를 함께 확인하며 승률을 올릴 수 있는 추천 포스트입니다.</p></div>
+            </div>
+          </section>
+        `;
+      }
+      function renderEventsPage() {
+        return `
+          <section class="section">
+            <div class="section-head"><h2>이벤트 & 배틀패스</h2><span>퀘스트 · 토너먼트 · 시즌 보상</span></div>
+            <div class="grid grid-2">
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>일일 퀘스트</h3><span>클리어 시 보상</span></div>
+                <div class="stack">${state.quests.map((quest) => `
+                  <div class="quest-card">
+                    <div class="line"><strong>${escapeHtml(quest.title)}</strong><span class="status ${quest.status === 'done' ? 'live' : 'pending'}">${quest.status === 'done' ? '완료' : '대기'}</span></div>
+                    <p class="muted" style="margin-top: 8px;">${escapeHtml(quest.desc)}</p>
+                    <div class="line"><span>${escapeHtml(quest.reward)}</span><button class="inline-btn" data-claim-quest="${quest.id}">수령</button></div>
+                  </div>
+                `).join('')}</div>
+              </div>
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>배틀패스</h3><span>레벨업 보상</span></div>
+                <div class="stack">
+                  <div class="mini-card"><div class="line"><strong>레벨 12</strong><span class="pill">+500P</span></div><p class="muted" style="margin-top: 8px;">보상 박스 · 스킨 · 배지</p></div>
+                  <div class="mini-card"><div class="line"><strong>레벨 20</strong><span class="pill">프리미엄 혜택</span></div><p class="muted" style="margin-top: 8px;">이벤트 우선 참여권</p></div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><h2>토너먼트 & 일정</h2><span>라이브 · 예정 · 친구 활동</span></div>
+            <div class="grid grid-3">
+              <div class="card" style="padding: 16px;"><h3>라이브 이벤트</h3><div class="divider"></div>${state.events.map((event) => `<div class="line"><span>${escapeHtml(event.title)}</span><button class="inline-btn" data-join-event="${event.id}">${event.status === 'live' ? '참여' : '알림 예약'}</button></div>`).join('')}</div>
+              <div class="card" style="padding: 16px;"><h3>토너먼트</h3><div class="divider"></div>${state.tournaments.map((t) => `<div class="line"><span>${escapeHtml(t.title)} · ${escapeHtml(t.mode)}</span><span>${escapeHtml(t.reward)}</span></div>`).join('')}</div>
+              <div class="card" style="padding: 16px;"><h3>친구 활동</h3><div class="divider"></div><div class="line"><span>Aiko</span><strong>새 공략 등록</strong></div><div class="line"><span>Nova</span><strong>토너먼트 등록</strong></div><div class="line"><span>Rin</span><strong>퀘스트 완료</strong></div></div>
+            </div>
+          </section>
+        `;
+      }
+      function renderShopPage() {
+        return `
+          <section class="section">
+            <div class="section-head"><h2>상점</h2><span>포인트 상점 · 크리에이터 상품 · 패밀리 혜택</span></div>
+            <div class="grid grid-3">
+              ${state.storeItems.map((item) => `
+                <div class="card" style="padding: 16px;">
+                  <h3>${escapeHtml(item.name)}</h3>
+                  <div class="meta">${escapeHtml(item.type)}</div>
+                  <div class="line"><span>${item.price}P</span><button class="btn btn-secondary" data-buy-item="${item.id}">구매</button></div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+          <section class="section">
+            <div class="section-head"><h2>친구 · 클랜 · 채팅</h2><span>클랜 모집 · 친구 요청 · 실시간 채팅</span></div>
+            <div class="grid grid-3">
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>친구 목록</h3><span>온라인 상태</span></div>
+                <div class="stack">${state.friends.map((friend) => `
+                  <div class="friend-item">
+                    <div class="line"><strong>${escapeHtml(friend.name)}</strong><span class="status ${friend.online ? 'live' : 'pending'}">${friend.online ? '온라인' : '오프라인'}</span></div>
+                    <p class="muted" style="margin-top: 8px;">${escapeHtml(friend.status)}</p>
+                    <div class="line"><span>Lv ${friend.level}</span><button class="inline-btn" data-follow-friend="${friend.id}">친구 추가</button></div>
+                  </div>
+                `).join('')}</div>
+              </div>
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>클랜 정보</h3><span>${escapeHtml(state.clan.rank)}</span></div>
+                <h4>${escapeHtml(state.clan.name)}</h4>
+                <p class="muted" style="margin-top: 8px;">${escapeHtml(state.clan.motto)}</p>
+                <div class="line"><span>멤버 ${state.clan.members}명</span><button class="inline-btn" data-join-clan>클랜 가입</button></div>
+                <div class="divider"></div>
+                <div class="stack">${state.announcements.map((item) => `<div class="mini-card"><strong>${escapeHtml(item.title)}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(item.body)}</p></div>`).join('')}</div>
+              </div>
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>실시간 채팅</h3><span>소통</span></div>
+                <div class="stack">${state.chatMessages.map((message) => `
+                  <div class="chat-bubble ${message.author === 'Nova' ? 'self' : ''}">
+                    <strong>${escapeHtml(message.author)}</strong>
+                    <p class="muted" style="margin-top: 4px;">${escapeHtml(message.body)}</p>
+                  </div>
+                `).join('')}</div>
+                <form id="chat-form" class="stack" style="margin-top: 10px;">
+                  <input class="input" name="message" placeholder="메시지 입력" required />
+                  <button class="btn btn-secondary" type="submit">전송</button>
                 </form>
               </div>
-            `).join('')}
-          </div>
-        `;
-      }
-      function renderEvents() {
-        const container = document.getElementById('events');
-        container.innerHTML = `
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>일일 퀘스트</h3><span>클리어 시 보상</span></div>
-            <div class="stack">${state.quests.map((quest) => `
-              <div class="quest-card">
-                <div class="line"><strong>${escapeHtml(quest.title)}</strong><span class="status ${quest.status === 'done' ? 'live' : 'pending'}">${quest.status === 'done' ? '완료' : '대기'}</span></div>
-                <p class="muted" style="margin-top: 8px;">${escapeHtml(quest.desc)}</p>
-                <div class="line"><span>${escapeHtml(quest.reward)}</span><button class="inline-btn" data-claim-quest="${quest.id}">수령</button></div>
-              </div>
-            `).join('')}</div>
-          </div>
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>배틀패스</h3><span>레벨업 보상</span></div>
-            <div class="stack">
-              <div class="mini-card"><div class="line"><strong>레벨 12</strong><span class="pill">+500P</span></div><p class="muted" style="margin-top: 8px;">보상 박스 · 스킨 · 배지</p></div>
-              <div class="mini-card"><div class="line"><strong>레벨 20</strong><span class="pill">프리미엄 혜택</span></div><p class="muted" style="margin-top: 8px;">이벤트 우선 참여권</p></div>
             </div>
-          </div>
+          </section>
         `;
       }
-      function renderCalendar() {
-        const container = document.getElementById('calendar');
-        container.innerHTML = `
-          <div class="card" style="padding: 16px;"><h3>라이브 이벤트</h3><div class="divider"></div>${state.events.map((event) => `<div class="line"><span>${escapeHtml(event.title)}</span><button class="inline-btn" data-join-event="${event.id}">${event.status === 'live' ? '참여' : '알림 예약'}</button></div>`).join('')}</div>
-          <div class="card" style="padding: 16px;"><h3>토너먼트</h3><div class="divider"></div>${state.tournaments.map((t) => `<div class="line"><span>${escapeHtml(t.title)} · ${escapeHtml(t.mode)}</span><span>${escapeHtml(t.reward)}</span></div>`).join('')}</div>
-          <div class="card" style="padding: 16px;"><h3>친구 활동</h3><div class="divider"></div><div class="line"><span>Aiko</span><strong>새 공략 등록</strong></div><div class="line"><span>Nova</span><strong>토너먼트 등록</strong></div><div class="line"><span>Rin</span><strong>퀘스트 완료</strong></div></div>
+      function renderProfilePage() {
+        const user = getCurrentUser();
+        return `
+          <section class="section">
+            <div class="section-head"><h2>프로필</h2><span>로그인 · 가입 · 상태 관리</span></div>
+            <div class="grid grid-2">
+              <div class="card" style="padding: 16px;">
+                ${user ? `
+                  <div class="section-head"><h3>내 프로필</h3><span>${escapeHtml(user.plan.toUpperCase())}</span></div>
+                  <div class="line"><div style="display:flex;gap:10px;align-items:center;"><div class="avatar">${escapeHtml(user.avatar)}</div><div><strong>${escapeHtml(user.displayName)}</strong><div class="muted">${escapeHtml(user.status)}</div></div></div><span class="pill">${user.points}P</span></div>
+                  <p class="muted" style="margin-top: 10px;">${escapeHtml(user.bio)}</p>
+                  <div class="chip-list" style="margin-top: 10px;">${user.badges.map((badge) => `<span class="chip active">${escapeHtml(badge)}</span>`).join('')}</div>
+                  <div class="actions-inline"><button class="inline-btn" data-logout>로그아웃</button><button class="inline-btn" data-theme-toggle>테마 전환</button></div>
+                  <div class="divider"></div>
+                  <form id="profile-form" class="stack">
+                    <input class="input" name="status" value="${escapeHtml(user.status)}" />
+                    <textarea name="bio">${escapeHtml(user.bio)}</textarea>
+                    <button class="btn btn-secondary" type="submit">프로필 저장</button>
+                  </form>
+                ` : `
+                  <div class="section-head"><h3>로그인 / 회원가입</h3><span>로컬 저장</span></div>
+                  <form id="login-form" class="stack">
+                    <input class="input" name="email" placeholder="이메일" required />
+                    <input class="input" name="password" type="password" placeholder="비밀번호" required />
+                    <button class="btn btn-primary" type="submit">로그인</button>
+                  </form>
+                  <div class="divider"></div>
+                  <form id="register-form" class="stack">
+                    <input class="input" name="username" placeholder="닉네임" required />
+                    <input class="input" name="email" placeholder="이메일" required />
+                    <input class="input" name="password" type="password" placeholder="비밀번호" required />
+                    <button class="btn btn-secondary" type="submit">회원가입</button>
+                  </form>
+                `}
+              </div>
+              <div class="card" style="padding: 16px;">
+                <div class="section-head"><h3>업적 · AI 추천</h3><span>도전과제</span></div>
+                <div class="stack">${state.achievements.map((achievement) => `
+                  <div class="achievement-card">
+                    <div class="line"><strong>${escapeHtml(achievement.title)}</strong><span class="status ${achievement.unlocked ? 'ready' : 'pending'}">${achievement.unlocked ? '보상 가능' : '대기'}</span></div>
+                    <p class="muted" style="margin-top: 8px;">${escapeHtml(achievement.desc)}</p>
+                    <div class="line"><span>${escapeHtml(achievement.reward)}</span><button class="inline-btn" data-claim-achievement="${achievement.id}">${achievement.unlocked ? '수령' : '잠김'}</button></div>
+                  </div>
+                `).join('')}</div>
+                <div class="divider"></div>
+                <div class="stack">${state.aiRecommendations.map((item) => `<div class="recommend-card"><strong>${escapeHtml(item.title)}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(item.body)}</p></div>`).join('')}</div>
+                <button class="btn btn-secondary" style="margin-top: 10px;" data-refresh-ai>추천 새로 받기</button>
+              </div>
+            </div>
+          </section>
         `;
       }
-      function renderSocial() {
-        const container = document.getElementById('social');
-        container.innerHTML = `
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>친구 목록</h3><span>온라인 상태</span></div>
-            <div class="stack">${state.friends.map((friend) => `
-              <div class="friend-item">
-                <div class="line"><strong>${escapeHtml(friend.name)}</strong><span class="status ${friend.online ? 'live' : 'pending'}">${friend.online ? '온라인' : '오프라인'}</span></div>
-                <p class="muted" style="margin-top: 8px;">${escapeHtml(friend.status)}</p>
-                <div class="line"><span>Lv ${friend.level}</span><button class="inline-btn" data-follow-friend="${friend.id}">친구 추가</button></div>
-              </div>
-            `).join('')}</div>
-          </div>
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>클랜 정보</h3><span>${escapeHtml(state.clan.rank)}</span></div>
-            <h4>${escapeHtml(state.clan.name)}</h4>
-            <p class="muted" style="margin-top: 8px;">${escapeHtml(state.clan.motto)}</p>
-            <div class="line"><span>멤버 ${state.clan.members}명</span><button class="inline-btn" data-join-clan>클랜 가입</button></div>
-            <div class="divider"></div>
-            <div class="stack">${state.announcements.map((item) => `<div class="mini-card"><strong>${escapeHtml(item.title)}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(item.body)}</p></div>`).join('')}</div>
-          </div>
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>실시간 채팅</h3><span>소통</span></div>
-            <div class="stack">${state.chatMessages.map((message) => `
-              <div class="chat-bubble ${message.author === 'Nova' ? 'self' : ''}">
-                <strong>${escapeHtml(message.author)}</strong>
-                <p class="muted" style="margin-top: 4px;">${escapeHtml(message.body)}</p>
-              </div>
-            `).join('')}</div>
-            <form id="chat-form" class="stack" style="margin-top: 10px;">
-              <input class="input" name="message" placeholder="메시지 입력" required />
-              <button class="btn btn-secondary" type="submit">전송</button>
-            </form>
-          </div>
-        `;
-      }
-      function renderExtras() {
-        const container = document.getElementById('extras');
-        container.innerHTML = `
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>투표</h3><span>커뮤니티 선호도</span></div>
-            <div class="stack">${state.polls.map((poll) => `
-              <div class="poll-card">
-                <strong>${escapeHtml(poll.question)}</strong>
-                <div class="stack" style="margin-top: 10px;">${poll.options.map((option) => `<button class="inline-btn" data-vote-poll="${poll.id}:${option.id}">${escapeHtml(option.label)} · ${option.votes}표</button>`).join('')}</div>
-              </div>
-            `).join('')}</div>
-          </div>
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>업적</h3><span>도전과제</span></div>
-            <div class="stack">${state.achievements.map((achievement) => `
-              <div class="achievement-card">
-                <div class="line"><strong>${escapeHtml(achievement.title)}</strong><span class="status ${achievement.unlocked ? 'ready' : 'pending'}">${achievement.unlocked ? '보상 가능' : '대기'}</span></div>
-                <p class="muted" style="margin-top: 8px;">${escapeHtml(achievement.desc)}</p>
-                <div class="line"><span>${escapeHtml(achievement.reward)}</span><button class="inline-btn" data-claim-achievement="${achievement.id}">${achievement.unlocked ? '수령' : '잠김'}</button></div>
-              </div>
-            `).join('')}</div>
-          </div>
-          <div class="card" style="padding: 16px;">
-            <div class="section-head"><h3>AI 추천</h3><span>맞춤형 추천</span></div>
-            <div class="stack">${state.aiRecommendations.map((item) => `<div class="recommend-card"><strong>${escapeHtml(item.title)}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(item.body)}</p></div>`).join('')}</div>
-            <button class="btn btn-secondary" style="margin-top: 10px;" data-refresh-ai>추천 새로 받기</button>
-          </div>
-        `;
-      }
-      function renderShop() {
-        const container = document.getElementById('shop');
-        container.innerHTML = state.storeItems.map((item) => `
-          <div class="card" style="padding: 16px;">
-            <h3>${escapeHtml(item.name)}</h3>
-            <div class="meta">${escapeHtml(item.type)}</div>
-            <div class="line"><span>${item.price}P</span><button class="btn btn-secondary" data-buy-item="${item.id}">구매</button></div>
-          </div>
-        `).join('');
-      }
-      function renderStats() {
-        document.getElementById('stat-visits').textContent = (state.users.length * 1200 + 8400).toLocaleString();
-        document.getElementById('stat-users').textContent = state.users.length.toString();
-        document.getElementById('stat-quests').textContent = state.quests.filter((q) => q.status === 'done').length.toString();
+      function renderPage() {
+        const container = document.getElementById('page-content');
+        if (!container) return;
+        const page = state.ui.currentPage || 'home';
+        const content = page === 'community' ? renderCommunityPage() : page === 'games' ? renderGamesPage() : page === 'events' ? renderEventsPage() : page === 'shop' ? renderShopPage() : page === 'profile' ? renderProfilePage() : renderHomePage();
+        container.innerHTML = content;
       }
       function renderApp() {
         applyTheme();
-        renderProfileCard();
-        renderGames();
-        renderCommunity();
-        renderEvents();
-        renderCalendar();
-        renderSocial();
-        renderExtras();
-        renderShop();
-        renderStats();
+        renderNav();
+        renderPage();
         saveState();
+      }
+      function navigateTo(page) {
+        state.ui.currentPage = page;
+        window.location.hash = page;
+        renderApp();
       }
       function handleLogin(event) {
         event.preventDefault();
@@ -543,15 +591,18 @@
         const user = getCurrentUser();
         if (!user) { showToast('로그인 후 게시글을 작성할 수 있습니다.'); return; }
         const tags = event.target.tags.value.split(',').map((t) => t.trim()).filter(Boolean);
-        const post = { id: `p${Date.now()}`, authorId: user.id, title: event.target.title.value.trim(), body: event.target.body.value.trim(), category: 'guide', tags, likes: 0, dislikes: 0, views: 0, bookmarked: false, comments: [], createdAt: new Date().toISOString() };
+        const post = { id: `p${Date.now()}`, authorId: user.id, title: event.target.title.value.trim(), body: event.target.body.value.trim(), category: 'guide', tags, likes: 0, dislikes: 0, views: 0, bookmarked: false, pinned: false, comments: [], createdAt: new Date().toISOString() };
         state.posts.unshift(post);
         event.target.reset();
         showToast('게시글이 등록되었습니다.');
         renderApp();
       }
       function handleClick(event) {
-        const target = event.target.closest('button, [data-logout], [data-theme-toggle], [data-join-game], [data-claim-quest], [data-join-event], [data-buy-item], [data-reaction], [data-bookmark], [data-vote-poll], [data-claim-achievement], [data-follow-friend], [data-join-clan], [data-refresh-ai]');
+        const navTarget = event.target.closest('[data-nav]');
+        if (navTarget) { event.preventDefault(); navigateTo(navTarget.dataset.nav); return; }
+        const target = event.target.closest('button, [data-logout], [data-theme-toggle], [data-join-game], [data-claim-quest], [data-join-event], [data-buy-item], [data-reaction], [data-bookmark], [data-vote-poll], [data-claim-achievement], [data-follow-friend], [data-join-clan], [data-refresh-ai], [data-feed-filter]');
         if (!target) return;
+        if (target.matches('[data-feed-filter]')) { state.ui.feedFilter = target.dataset.feedFilter; renderApp(); return; }
         if (target.matches('[data-logout]')) { state.currentUserId = null; showToast('로그아웃되었습니다.'); renderApp(); return; }
         if (target.matches('[data-theme-toggle]')) { state.ui.theme = state.ui.theme === 'dark' ? 'light' : 'dark'; showToast('테마가 변경되었습니다.'); renderApp(); return; }
         if (target.matches('[data-join-game]')) { showToast('매치 참가 요청이 접수되었습니다.'); return; }
@@ -577,13 +628,25 @@
       function handleInput(event) {
         if (event.target.id === 'search-posts') {
           state.ui.searchQuery = event.target.value;
-          renderCommunity();
+          renderApp();
         }
       }
       document.addEventListener('click', handleClick);
       document.addEventListener('submit', handleSubmit);
       document.addEventListener('input', handleInput);
-      window.addEventListener('DOMContentLoaded', () => { applyTheme(); renderApp(); });
+      window.addEventListener('hashchange', () => {
+        const hash = location.hash.replace('#', '') || 'home';
+        if (pageNames.some((page) => page.key === hash)) {
+          state.ui.currentPage = hash;
+          renderApp();
+        }
+      });
+      window.addEventListener('DOMContentLoaded', () => {
+        const hash = location.hash.replace('#', '') || 'home';
+        if (pageNames.some((page) => page.key === hash)) state.ui.currentPage = hash;
+        applyTheme();
+        renderApp();
+      });
     </script>
   </body>
 </html>
