@@ -3,761 +3,468 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ONGI — 실제 서비스형 게임 커뮤니티</title>
+    <title>ONGI — 게임 커뮤니티 & 라이프스타일 플랫폼</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --bg: #04070f;
-        --panel: rgba(10, 16, 32, 0.9);
-        --panel-2: rgba(255,255,255,0.05);
-        --text: #f3f7ff;
-        --muted: #8fa4c7;
+        --bg: #060814;
+        --panel: rgba(8, 13, 28, 0.92);
+        --panel-soft: rgba(255,255,255,0.06);
+        --text: #f6f8ff;
+        --muted: #97a7c7;
         --line: rgba(255,255,255,0.1);
-        --accent: #5ee7ff;
-        --accent-2: #8b5cf6;
-        --accent-3: #ff4d8d;
-        --success: #34d399;
-        --warning: #fbbf24;
+        --accent: #53e4ff;
+        --accent-2: #a855f7;
+        --accent-3: #ff5ea8;
+        --success: #22c55e;
+        --warning: #f59e0b;
         --shadow: 0 20px 60px rgba(0,0,0,0.32);
       }
       body.light {
-        --bg: #f6f7fb;
-        --panel: rgba(255,255,255,0.9);
-        --panel-2: rgba(10,16,32,0.04);
+        --bg: #f4f7ff;
+        --panel: rgba(255,255,255,0.95);
+        --panel-soft: rgba(15, 23, 42, 0.04);
         --text: #0f172a;
         --muted: #64748b;
-        --line: rgba(15,23,42,0.08);
-        --shadow: 0 20px 60px rgba(15,23,42,0.1);
+        --line: rgba(15, 23, 42, 0.08);
+        --shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
       }
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
       body {
         margin: 0;
-        font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        font-family: 'Inter','Noto Sans KR',sans-serif;
         color: var(--text);
-        background: radial-gradient(circle at top left, rgba(94,231,255,0.18), transparent 24%), radial-gradient(circle at 90% 0%, rgba(139,92,246,0.18), transparent 22%), linear-gradient(135deg, #04070f 0%, #0b1022 50%, #03060f 100%);
+        background: radial-gradient(circle at top left, rgba(83,228,255,0.16), transparent 25%), radial-gradient(circle at 90% 0%, rgba(168,85,247,0.18), transparent 28%), linear-gradient(135deg, #04070f 0%, #0b1124 50%, #060814 100%);
         min-height: 100vh;
       }
-      body.light { background: linear-gradient(135deg, #f8fbff 0%, #eef3ff 100%); }
+      body.light { background: linear-gradient(135deg, #f7faff 0%, #eef4ff 100%); }
       a { color: inherit; text-decoration: none; }
       button, input, select, textarea { font: inherit; }
-      .shell { width: min(1400px, calc(100% - 32px)); margin: 0 auto; }
-      .topbar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(18px); background: rgba(4, 8, 20, 0.78); border-bottom: 1px solid var(--line); }
+      .shell { width: min(1320px, calc(100% - 30px)); margin: 0 auto; }
+      .topbar { position: sticky; top: 0; z-index: 50; background: rgba(4, 8, 18, 0.76); backdrop-filter: blur(18px); border-bottom: 1px solid var(--line); }
       body.light .topbar { background: rgba(255,255,255,0.8); }
-      .topbar-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; }
-      .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .04em; }
-      .brand-mark { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; box-shadow: 0 15px 40px rgba(94,231,255,0.25); }
-      .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
-      .nav-links a { padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); transition: .2s ease; }
-      body.light .nav-links a { background: var(--panel-2); }
-      .nav-links a.active, .nav-links a:hover { color: var(--text); border-color: rgba(94,231,255,0.4); transform: translateY(-2px); }
-      .hero { display: grid; grid-template-columns: 1.35fr .65fr; gap: 20px; padding: 28px 0 16px; }
+      .topbar-inner { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; gap: 16px; }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: 0.03em; }
+      .brand-mark { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: white; box-shadow: 0 12px 30px rgba(83,228,255,0.25); }
+      .nav { display: flex; flex-wrap: wrap; gap: 8px; }
+      .nav a { padding: 8px 12px; border-radius: 999px; color: var(--muted); border: 1px solid transparent; transition: 0.2s ease; }
+      .nav a:hover { color: var(--text); border-color: rgba(83,228,255,0.35); background: var(--panel-soft); }
+      .hero { display: grid; grid-template-columns: 1.3fr 0.8fr; gap: 18px; padding: 28px 0 12px; }
       .card { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow); backdrop-filter: blur(18px); }
       .hero-main { padding: 28px; position: relative; overflow: hidden; }
-      .hero-main::after { content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%; right: -40px; bottom: -60px; background: radial-gradient(circle, rgba(94,231,255,0.3), transparent 70%); }
-      .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; background: rgba(94,231,255,0.13); color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+      .hero-main::after { content: ''; position: absolute; width: 260px; height: 260px; border-radius: 50%; right: -80px; bottom: -100px; background: radial-gradient(circle, rgba(83,228,255,0.18), transparent 72%); }
+      .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 999px; background: rgba(83,228,255,0.14); color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
       h1, h2, h3, h4, p { margin: 0; }
-      h1 { font-size: clamp(28px, 4.5vw, 48px); margin: 14px 0 12px; line-height: 1.1; }
-      .hero p, .muted { color: var(--muted); line-height: 1.7; }
+      h1 { font-size: clamp(28px, 4.6vw, 46px); line-height: 1.1; margin: 16px 0 12px; }
+      .lead { color: var(--muted); line-height: 1.75; font-size: 15px; }
       .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 20px; }
-      .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 999px; padding: 11px 15px; cursor: pointer; color: white; transition: .25s ease; }
+      .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 15px; border-radius: 999px; border: 0; cursor: pointer; color: white; transition: 0.2s ease; }
       .btn:hover { transform: translateY(-2px); }
       .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
       .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); border: 1px solid rgba(255,255,255,0.12); }
-      body.light .btn-secondary { background: var(--panel-2); }
-      .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-      .stat-box, .panel, .feature-card, .game-card, .post-card, .payment-card, .admin-card, .side-item, .auth-card, .empty-card {
-        padding: 16px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
-      body.light .stat-box, body.light .panel, body.light .feature-card, body.light .game-card, body.light .post-card, body.light .payment-card, body.light .admin-card, body.light .side-item, body.light .auth-card, body.light .empty-card { background: var(--panel-2); }
-      .stat-box strong { display: block; font-size: 18px; margin-top: 6px; }
-      .stat-box span { color: var(--muted); font-size: 12px; }
-      .side-item { display: grid; gap: 8px; }
-      .section { padding: 16px 0 8px; }
-      .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+      body.light .btn-secondary { background: var(--panel-soft); }
+      .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+      .stat-box, .panel, .mini-card, .feed-card, .shop-card, .quest-card, .event-card, .ranking-card, .auth-card { padding: 16px; border-radius: 18px; background: var(--panel-soft); border: 1px solid var(--line); }
+      .section { padding: 6px 0 16px; }
+      .section-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
       .section-head span { color: var(--muted); font-size: 13px; }
       .grid { display: grid; gap: 16px; }
       .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
-      .chip { padding: 8px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--muted); font-size: 13px; border: 1px solid rgba(255,255,255,0.08); }
-      .chip.active { color: var(--text); background: rgba(94,231,255,0.18); border-color: rgba(94,231,255,0.35); }
-      .game-card .thumb { height: 110px; border-radius: 14px; margin-bottom: 12px; background: linear-gradient(135deg, rgba(94,231,255,0.35), rgba(139,92,246,0.4)); }
+      .chip { padding: 7px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); font-size: 12px; }
+      .chip.active { color: var(--text); background: rgba(83,228,255,0.16); border-color: rgba(83,228,255,0.35); }
+      .thumb { height: 110px; border-radius: 14px; margin-bottom: 12px; background: linear-gradient(135deg, rgba(83,228,255,0.34), rgba(168,85,247,0.38)); }
       .meta { color: var(--muted); font-size: 12px; margin-top: 6px; }
-      .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
-      .tag { padding: 6px 8px; border-radius: 999px; font-size: 11px; background: rgba(255,255,255,0.05); color: var(--muted); }
+      .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+      .tag { padding: 6px 8px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--muted); font-size: 11px; }
       .stack { display: grid; gap: 10px; }
       .input, select, textarea { width: 100%; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); border-radius: 12px; padding: 11px 12px; }
       textarea { min-height: 92px; resize: vertical; }
-      .two-col { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
-      .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-      .badge { padding: 7px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--text); font-size: 12px; }
-      .status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 999px; font-size: 12px; }
-      .status.approved { background: rgba(52,211,153,0.16); color: #8df2c2; }
-      .status.pending { background: rgba(251,191,36,0.16); color: #fdd88d; }
-      .status.rejected { background: rgba(255,77,141,0.16); color: #ff9ec2; }
+      .line { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); margin-top: 8px; }
       .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 10px 0; }
       .actions-inline { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-      .inline-btn { padding: 8px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); cursor: pointer; color: var(--text); }
-      .line { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; color: var(--muted); }
-      .footer { padding: 24px 0 36px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+      .inline-btn { padding: 8px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.06); color: var(--text); cursor: pointer; }
+      .avatar { width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; font-size: 24px; background: linear-gradient(135deg, rgba(255,94,168,0.28), rgba(83,228,255,0.28)); }
+      .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 999px; font-size: 12px; background: rgba(255,255,255,0.06); }
+      .status { display: inline-flex; padding: 6px 8px; border-radius: 999px; font-size: 12px; }
+      .status.live { background: rgba(34,197,94,0.16); color: #86efac; }
+      .status.pending { background: rgba(245,158,11,0.16); color: #fcd34d; }
+      .muted { color: var(--muted); }
+      .footer { padding: 24px 0 40px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+      .toast-root { position: fixed; right: 16px; bottom: 16px; display: grid; gap: 10px; z-index: 100; }
+      .toast { padding: 12px 14px; border-radius: 14px; background: rgba(6,8,16,0.92); color: white; border: 1px solid rgba(255,255,255,0.14); box-shadow: var(--shadow); }
       .hidden { display: none !important; }
-      .avatar { width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, rgba(255,77,141,0.38), rgba(94,231,255,0.35)); display: grid; place-items: center; font-size: 32px; }
-      .profile-card { display: flex; gap: 16px; align-items: center; }
-      .table { width: 100%; border-collapse: collapse; }
-      .table th, .table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
-      .table th { color: var(--muted); }
-      .subtle { color: var(--muted); font-size: 13px; }
-      .section-title { display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-weight: 700; margin-bottom: 10px; }
-      @media (max-width: 1100px) { .hero, .two-col, .grid-3, .grid-4 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+      @media (max-width: 1100px) { .hero, .grid-3, .grid-4 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
       @media (max-width: 720px) { .topbar-inner { flex-wrap: wrap; } .stats { grid-template-columns: 1fr; } }
     </style>
   </head>
   <body>
     <header class="topbar">
       <div class="shell topbar-inner">
-        <a class="brand" href="#home" data-nav="home">
-          <div class="brand-mark">◉</div>
-          <div>ONGI<br /><span class="muted" style="font-size: 12px; font-weight: 600;">Game Community · Monetization</span></div>
+        <a class="brand" href="#top">
+          <div class="brand-mark">옹</div>
+          <div>ONGI<br /><span class="muted" style="font-size:12px;font-weight:600;">게임 커뮤니티 · 이벤트 · 보상 · 상점</span></div>
         </a>
-        <nav class="nav-links" id="nav-links"></nav>
+        <nav class="nav">
+          <a href="#games">게임</a>
+          <a href="#community">커뮤니티</a>
+          <a href="#events">이벤트</a>
+          <a href="#shop">상점</a>
+          <a href="#profile">프로필</a>
+        </nav>
       </div>
     </header>
 
-    <main class="shell" id="app"></main>
+    <main class="shell" id="top">
+      <section class="hero">
+        <div class="card hero-main">
+          <div class="eyebrow">● ONGI RE:DESIGNED</div>
+          <h1>게임 플레이를 더 재밌게 만드는 커뮤니티를 새로 열었습니다.</h1>
+          <p class="lead">로그인, 게시글, 댓글, 북마크, 퀘스트, 토너먼트, 보상 상점, 이벤트 참여까지 한 페이지에서 실제로 동작합니다. 관리자 패널 없이 더 몰입감 있는 경험을 제공합니다.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#community">커뮤니티 둘러보기</a>
+            <a class="btn btn-secondary" href="#events">이벤트 참여</a>
+          </div>
+          <div class="stats">
+            <div class="stat-box"><div class="muted">오늘 접속</div><strong id="stat-visits">0</strong></div>
+            <div class="stat-box"><div class="muted">활성 유저</div><strong id="stat-users">0</strong></div>
+            <div class="stat-box"><div class="muted">완료 퀘스트</div><strong id="stat-quests">0</strong></div>
+          </div>
+        </div>
+        <div class="card" id="profile" style="padding: 18px; display:grid; gap: 12px;"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>추천 게임</h2><span>실시간 추천 · 공략 · 매치</span></div>
+        <div class="grid grid-3" id="games"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>커뮤니티</h2><span>포스트 · 댓글 · 북마크 · 반응</span></div>
+        <div class="grid grid-2" id="community"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>퀘스트 & 배틀패스</h2><span>일일 미션 · 업적 · 리워드</span></div>
+        <div class="grid grid-2" id="events"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>토너먼트 & 일정</h2><span>대회 · 시즌 · 캘린더</span></div>
+        <div class="grid grid-3" id="calendar"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>상점</h2><span>포인트 상점 · 크리에이터 상품 · 패밀리 혜택</span></div>
+        <div class="grid grid-3" id="shop"></div>
+      </section>
+    </main>
 
     <footer class="shell footer">
-      <div>ONGI — 게임 전문 커뮤니티 + 콘텐츠 플랫폼 + 광고 플랫폼</div>
-      <div>소개 · 이용약관 · 개인정보처리방침 · 문의</div>
+      <div>ONGI — 옹기 · 게임, 커뮤니티, 이벤트, 보상을 함께 즐기는 공간</div>
+      <div>Discord · Events · Support · Terms</div>
     </footer>
 
-    <script>
-      const STORAGE_KEY = 'ongi-app-state-v1';
-      const pageNames = [
-        { key: 'home', label: '홈' },
-        { key: 'games', label: '게임' },
-        { key: 'community', label: '커뮤니티' },
-        { key: 'profile', label: '프로필' },
-        { key: 'monetization', label: '수익화' },
-        { key: 'admin', label: '관리자' },
-        { key: 'settings', label: '설정' }
-      ];
+    <div class="toast-root" id="toast-root"></div>
 
+    <script>
+      const STORAGE_KEY = 'ongi-redesign-v1';
       const defaultState = {
         users: [
-          { id: 'u1', email: 'admin@ongi.com', password: '1234', username: 'NovaPlayer', displayName: 'NovaPlayer', role: 'admin', plan: 'pro', points: 1240, bio: '공략왕 / 패치 헌터', status: '오늘도 파밍 중', avatar: '🎮', badges: ['공략왕', '개발자', '관리자'], favorites: ['Valorant', 'Genshin Impact'], achievements: ['초보 탈출', '패치 헌터'] },
-          { id: 'u2', email: 'user@ongi.com', password: '1234', username: 'Aiko', displayName: 'Aiko', role: 'user', plan: 'plus', points: 480, bio: '모드 수집가', status: '새로운 빌드 테스트 중', avatar: '🕹️', badges: ['질문왕'], favorites: ['Fortnite'], achievements: ['첫 게시글'] }
+          { id: 'u1', email: 'admin@ongi.com', password: '1234', username: 'Nova', displayName: 'Nova', role: 'admin', plan: 'pro', points: 1240, bio: '공략과 이벤트 운영을 사랑해요.', status: '오늘도 파밍 중', avatar: '🎮', badges: ['공략왕', '이벤트 운영자'], favorites: ['Valorant', 'Genshin'], achievements: ['첫 가입', '퀘스트 마스터'], inventory: ['네온 테마', '배지'] },
+          { id: 'u2', email: 'user@ongi.com', password: '1234', username: 'Aiko', displayName: 'Aiko', role: 'user', plan: 'plus', points: 560, bio: '새 빌드와 레이아웃을 탐험 중이에요.', status: '새 시즌 준비', avatar: '🕹️', badges: ['질문왕'], favorites: ['Fortnite'], achievements: ['첫 게시글'], inventory: ['이모지'] }
         ],
         posts: [
-          { id: 'p1', authorId: 'u1', title: 'Valorant 에이전트 빌드 추천', body: '초보자도 바로 적용 가능한 세팅과 루틴을 정리해봤어요.', category: 'guide', tags: ['Guide', 'Build', 'PvP'], likes: 24, dislikes: 2, views: 3200, createdAt: '2026-07-08T02:00:00.000Z', bookmarked: false, comments: [{ id: 'c1', authorId: 'u2', body: '좋은 정보 감사합니다!', createdAt: '2026-07-08T02:10:00.000Z' }] },
-          { id: 'p2', authorId: 'u2', title: '신규 패치 노트 요약', body: '핵심 변경점만 보면 바로 이해되는 패치 요약입니다.', category: 'patch', tags: ['Patch', 'Meta', 'News'], likes: 9, dislikes: 1, views: 1900, createdAt: '2026-07-08T01:30:00.000Z', bookmarked: false, comments: [] }
+          { id: 'p1', authorId: 'u1', title: '신규 시즌 공략 정리', body: '초보자도 바로 따라 할 수 있는 공략 루틴을 정리해봤어요.', category: 'guide', tags: ['Guide','Season','Tips'], likes: 24, dislikes: 2, views: 3200, bookmarked: false, comments: [{ id: 'c1', authorId: 'u2', body: '좋은 정리네요!' }] },
+          { id: 'p2', authorId: 'u2', title: '이번 주 이벤트 미리보기', body: '토너먼트와 리워드 일정이 바뀌었어요. 참여해보세요.', category: 'event', tags: ['Event','Reward'], likes: 16, dislikes: 0, views: 1800, bookmarked: true, comments: [] }
         ],
         games: [
-          { id: 'g1', title: 'Valorant', genre: 'FPS', platform: 'PC', price: '무료', rating: 4.8, description: '전략형 FPS 공략과 에이전트 빌드 공유', tabs: { guide: '에이전트별 기본 딜레이와 세팅', bug: '버그 리포트 및 패치 반영 상황', patch: '최근 패치 핵심 변경점' } },
-          { id: 'g2', title: 'Genshin Impact', genre: 'RPG', platform: 'PC / Mobile', price: '무료', rating: 4.7, description: '파티 빌드와 캐릭터 공략 모음', tabs: { guide: '딜량 빌드, 서브스탯 정리', bug: '퀘스트 및 인터페이스 이슈', patch: '이벤트와 업데이트 요약' } },
-          { id: 'g3', title: 'Fortnite', genre: 'Battle Royale', platform: 'PC / Console', price: '무료', rating: 4.6, description: '시즌 이벤트와 모드 정보 모음', tabs: { guide: '빌드 공유와 맵 핫스팟', bug: '서버 이슈 및 플레이 이슈', patch: '시즌 패치 포인트' } }
+          { id: 'g1', title: 'Valorant', genre: 'FPS', platform: 'PC', rating: 4.8, description: '전략형 FPS 루틴과 에이전트 추천', tags: ['공략','매치','클럽'] },
+          { id: 'g2', title: 'Genshin Impact', genre: 'RPG', platform: 'Mobile/PC', rating: 4.7, description: '파티 빌드와 이벤트 공략', tags: ['파티','이벤트','빌드'] },
+          { id: 'g3', title: 'Fortnite', genre: 'Battle Royale', platform: 'PC/Console', rating: 4.6, description: '시즌 핫스팟과 장비 메타', tags: ['메타','모드','랭킹'] }
         ],
-        ads: [
-          { id: 'ad1', title: 'Steam Summer Sale', company: 'Steam', link: '#', description: '여름 할인 캠페인', type: 'image', status: 'approved', views: 824, clicks: 41, ctr: 4.98, cost: 1200, location: 'Top Banner' },
-          { id: 'ad2', title: 'AMD Radeon', company: 'AMD', link: '#', description: '게임용 GPU 추천', type: 'video', status: 'pending', views: 420, clicks: 18, ctr: 4.29, cost: 800, location: 'Sidebar' }
+        quests: [
+          { id: 'q1', title: '출석 체크', reward: '+200P', status: 'ready', desc: '오늘 첫 로그인하면 포인트를 받습니다.' },
+          { id: 'q2', title: '커뮤니티 참여', reward: '+100P', status: 'ready', desc: '게시글이나 댓글을 남기면 보상.' },
+          { id: 'q3', title: '토너먼트 응모', reward: '배지', status: 'ready', desc: '다가오는 대회에 참여하세요.' }
         ],
-        selectedGameId: 'g1',
+        events: [
+          { id: 'e1', title: '주간 클럽 매치', time: '오늘 20:00', status: 'live' },
+          { id: 'e2', title: '신규 시즌 패치 토크', time: '내일 19:00', status: 'pending' },
+          { id: 'e3', title: '리워드 뽑기', time: '매주 토요일', status: 'live' }
+        ],
+        tournaments: [
+          { id: 't1', title: 'Rival Cup', mode: '5v5', reward: '1200P' },
+          { id: 't2', title: 'Buddy Clash', mode: '듀오', reward: '800P' },
+          { id: 't3', title: 'Night Arena', mode: '솔로', reward: '600P' }
+        ],
+        storeItems: [
+          { id: 's1', name: '네온 프로필 배경', price: 180, type: 'cosmetic' },
+          { id: 's2', name: '클럽 배지', price: 220, type: 'reward' },
+          { id: 's3', name: '시즌 패스 업그레이드', price: 350, type: 'pass' }
+        ],
         currentUserId: null,
-        ui: { currentPage: 'home', theme: 'dark', compact: false, notifications: true, language: 'ko' }
+        ui: { theme: 'dark', notifications: true, compact: false, searchQuery: '' }
       };
-
       const state = loadState();
-
       function loadState() {
         try {
           const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-          if (!parsed) return structuredClone(defaultState);
+          if (!parsed) return JSON.parse(JSON.stringify(defaultState));
           return {
-            ...structuredClone(defaultState),
+            ...JSON.parse(JSON.stringify(defaultState)),
             ...parsed,
-            users: parsed.users || structuredClone(defaultState.users),
-            posts: parsed.posts || structuredClone(defaultState.posts),
-            games: parsed.games || structuredClone(defaultState.games),
-            ads: parsed.ads || structuredClone(defaultState.ads),
-            ui: { ...structuredClone(defaultState.ui), ...(parsed.ui || {}) },
-            selectedGameId: parsed.selectedGameId || structuredClone(defaultState.selectedGameId),
+            users: parsed.users || JSON.parse(JSON.stringify(defaultState.users)),
+            posts: parsed.posts || JSON.parse(JSON.stringify(defaultState.posts)),
+            games: parsed.games || JSON.parse(JSON.stringify(defaultState.games)),
+            quests: parsed.quests || JSON.parse(JSON.stringify(defaultState.quests)),
+            events: parsed.events || JSON.parse(JSON.stringify(defaultState.events)),
+            tournaments: parsed.tournaments || JSON.parse(JSON.stringify(defaultState.tournaments)),
+            storeItems: parsed.storeItems || JSON.parse(JSON.stringify(defaultState.storeItems)),
+            ui: { ...JSON.parse(JSON.stringify(defaultState.ui)), ...(parsed.ui || {}) },
             currentUserId: parsed.currentUserId || null
           };
         } catch (error) {
-          return structuredClone(defaultState);
+          return JSON.parse(JSON.stringify(defaultState));
         }
       }
-
-      function saveState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      function escapeHtml(value) { return String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+      function getCurrentUser() { return state.users.find((u) => u.id === state.currentUserId) || null; }
+      function getUserName(userId) { const u = state.users.find((user) => user.id === userId); return u ? u.displayName : '익명'; }
+      function showToast(message) { const root = document.getElementById('toast-root'); const toast = document.createElement('div'); toast.className = 'toast'; toast.textContent = message; root.appendChild(toast); setTimeout(() => toast.remove(), 1800); }
+      function applyTheme() { document.body.classList.toggle('light', state.ui.theme === 'light'); }
+      function renderProfileCard() {
+        const panel = document.getElementById('profile');
+        const user = getCurrentUser();
+        if (!user) {
+          panel.innerHTML = `
+            <div class="section-head"><h3>로그인 / 회원가입</h3><span>로컬 저장</span></div>
+            <form id="login-form" class="stack">
+              <input class="input" name="email" placeholder="이메일" required />
+              <input class="input" name="password" type="password" placeholder="비밀번호" required />
+              <button class="btn btn-primary" type="submit">로그인</button>
+            </form>
+            <div class="divider"></div>
+            <form id="register-form" class="stack">
+              <input class="input" name="username" placeholder="닉네임" required />
+              <input class="input" name="email" placeholder="이메일" required />
+              <input class="input" name="password" type="password" placeholder="비밀번호" required />
+              <button class="btn btn-secondary" type="submit">회원가입</button>
+            </form>
+          `;
+          return;
+        }
+        panel.innerHTML = `
+          <div class="section-head"><h3>내 프로필</h3><span>${escapeHtml(user.plan.toUpperCase())}</span></div>
+          <div class="line"><div style="display:flex;gap:10px;align-items:center;"><div class="avatar">${escapeHtml(user.avatar)}</div><div><strong>${escapeHtml(user.displayName)}</strong><div class="muted">${escapeHtml(user.status)}</div></div></div><span class="pill">${user.points}P</span></div>
+          <p class="muted" style="margin-top:10px;">${escapeHtml(user.bio)}</p>
+          <div class="chip-list" style="margin-top:10px;">${user.badges.map((badge) => `<span class="chip active">${escapeHtml(badge)}</span>`).join('')}</div>
+          <div class="actions-inline">
+            <button class="inline-btn" data-logout>로그아웃</button>
+            <button class="inline-btn" data-theme-toggle>테마 전환</button>
+          </div>
+          <div class="divider"></div>
+          <form id="profile-form" class="stack">
+            <input class="input" name="status" value="${escapeHtml(user.status)}" />
+            <textarea name="bio">${escapeHtml(user.bio)}</textarea>
+            <button class="btn btn-secondary" type="submit">프로필 저장</button>
+          </form>
+        `;
       }
-
-      function escapeHtml(value) {
-        return String(value)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
+      function renderGames() {
+        const container = document.getElementById('games');
+        container.innerHTML = state.games.map((game) => `
+          <div class="card" style="padding: 16px;">
+            <div class="thumb"></div>
+            <h3>${escapeHtml(game.title)}</h3>
+            <div class="meta">${escapeHtml(game.genre)} · ${escapeHtml(game.platform)} · 평점 ${game.rating}</div>
+            <p class="muted" style="margin-top: 8px;">${escapeHtml(game.description)}</p>
+            <div class="tag-row">${game.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+            <div class="actions-inline"><button class="btn btn-primary" data-join-game="${game.id}">매치 참여</button></div>
+          </div>
+        `).join('');
       }
-
-      function getCurrentUser() {
-        return state.users.find((user) => user.id === state.currentUserId) || null;
+      function renderCommunity() {
+        const composer = document.getElementById('community');
+        const user = getCurrentUser();
+        const filteredPosts = state.posts.filter((post) => {
+          const q = state.ui.searchQuery.trim().toLowerCase();
+          if (!q) return true;
+          const hay = `${post.title} ${post.body} ${post.tags.join(' ')} ${getUserName(post.authorId)}`.toLowerCase();
+          return hay.includes(q);
+        });
+        composer.innerHTML = `
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>게시글 작성</h3><span>${user ? '로그인됨' : '로그인 필요'}</span></div>
+            <form id="post-form" class="stack">
+              <input class="input" name="title" placeholder="제목" required />
+              <textarea name="body" placeholder="내용" required></textarea>
+              <input class="input" name="tags" placeholder="태그를 쉼표로 구분" />
+              <button class="btn btn-primary" type="submit">게시글 등록</button>
+            </form>
+            <div class="divider"></div>
+            <input class="input" id="search-posts" placeholder="게시글 검색" value="${escapeHtml(state.ui.searchQuery)}" />
+          </div>
+          <div class="stack">
+            ${filteredPosts.slice().reverse().map((post) => `
+              <div class="feed-card">
+                <div class="line"><strong>${escapeHtml(post.title)}</strong><span>${new Date(post.createdAt || '2026-07-08T00:00:00.000Z').toLocaleString('ko-KR')}</span></div>
+                <p class="muted" style="margin-top: 8px;">${escapeHtml(post.body)}</p>
+                <div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+                <div class="actions-inline">
+                  <button class="inline-btn" data-reaction="like" data-post-id="${post.id}">👍 ${post.likes}</button>
+                  <button class="inline-btn" data-reaction="dislike" data-post-id="${post.id}">👎 ${post.dislikes}</button>
+                  <button class="inline-btn" data-bookmark="${post.id}">${post.bookmarked ? '🔖 저장됨' : '🔖 저장'}</button>
+                </div>
+                <div class="divider"></div>
+                <div class="stack">
+                  ${post.comments.map((comment) => `<div class="panel"><strong>${escapeHtml(getUserName(comment.authorId))}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(comment.body)}</p></div>`).join('')}
+                </div>
+                <form class="stack" style="margin-top: 10px;" data-comment-form="${post.id}">
+                  <textarea name="comment" placeholder="댓글을 남겨보세요" required></textarea>
+                  <button class="btn btn-secondary" type="submit">댓글 등록</button>
+                </form>
+              </div>
+            `).join('')}
+          </div>
+        `;
       }
-
-      function applyTheme() {
-        document.body.classList.toggle('light', state.ui.theme === 'light');
+      function renderEvents() {
+        const container = document.getElementById('events');
+        container.innerHTML = `
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>일일 퀘스트</h3><span>클리어 시 보상</span></div>
+            <div class="stack">${state.quests.map((quest) => `
+              <div class="quest-card">
+                <div class="line"><strong>${escapeHtml(quest.title)}</strong><span class="status ${quest.status === 'done' ? 'live' : 'pending'}">${quest.status === 'done' ? '완료' : '대기'}</span></div>
+                <p class="muted" style="margin-top: 8px;">${escapeHtml(quest.desc)}</p>
+                <div class="line"><span>${escapeHtml(quest.reward)}</span><button class="inline-btn" data-claim-quest="${quest.id}">수령</button></div>
+              </div>
+            `).join('')}</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="section-head"><h3>배틀패스</h3><span>레벨업 보상</span></div>
+            <div class="stack">
+              <div class="mini-card"><div class="line"><strong>레벨 12</strong><span class="pill">+500P</span></div><p class="muted" style="margin-top: 8px;">보상 박스 · 스킨 · 배지</p></div>
+              <div class="mini-card"><div class="line"><strong>레벨 20</strong><span class="pill">프리미엄 혜택</span></div><p class="muted" style="margin-top: 8px;">이벤트 우선 참여권</p></div>
+            </div>
+          </div>
+        `;
       }
-
-      function renderNav() {
-        const nav = document.getElementById('nav-links');
-        nav.innerHTML = pageNames.map((page) => `<a href="#${page.key}" data-nav="${page.key}" class="${state.ui.currentPage === page.key ? 'active' : ''}">${page.label}</a>`).join('');
+      function renderCalendar() {
+        const container = document.getElementById('calendar');
+        container.innerHTML = `
+          <div class="card" style="padding: 16px;"><h3>라이브 이벤트</h3><div class="divider"></div>${state.events.map((event) => `<div class="line"><span>${escapeHtml(event.title)}</span><button class="inline-btn" data-join-event="${event.id}">${event.status === 'live' ? '참여' : '알림 예약'}</button></div>`).join('')}</div>
+          <div class="card" style="padding: 16px;"><h3>토너먼트</h3><div class="divider"></div>${state.tournaments.map((t) => `<div class="line"><span>${escapeHtml(t.title)} · ${escapeHtml(t.mode)}</span><span>${escapeHtml(t.reward)}</span></div>`).join('')}</div>
+          <div class="card" style="padding: 16px;"><h3>친구 활동</h3><div class="divider"></div><div class="line"><span>Aiko</span><strong>새 공략 등록</strong></div><div class="line"><span>Nova</span><strong>토너먼트 등록</strong></div><div class="line"><span>Rin</span><strong>퀘스트 완료</strong></div></div>
+        `;
       }
-
+      function renderShop() {
+        const container = document.getElementById('shop');
+        container.innerHTML = state.storeItems.map((item) => `
+          <div class="card" style="padding: 16px;">
+            <h3>${escapeHtml(item.name)}</h3>
+            <div class="meta">${escapeHtml(item.type)}</div>
+            <div class="line"><span>${item.price}P</span><button class="btn btn-secondary" data-buy-item="${item.id}">구매</button></div>
+          </div>
+        `).join('');
+      }
+      function renderStats() {
+        document.getElementById('stat-visits').textContent = (state.users.length * 1200 + 8400).toLocaleString();
+        document.getElementById('stat-users').textContent = state.users.length.toString();
+        document.getElementById('stat-quests').textContent = state.quests.filter((q) => q.status === 'done').length.toString();
+      }
       function renderApp() {
         applyTheme();
-        renderNav();
-        const app = document.getElementById('app');
-        const page = state.ui.currentPage;
-        if (page === 'home') renderHome(app);
-        else if (page === 'games') renderGames(app);
-        else if (page === 'community') renderCommunity(app);
-        else if (page === 'profile') renderProfile(app);
-        else if (page === 'monetization') renderMonetization(app);
-        else if (page === 'admin') renderAdmin(app);
-        else if (page === 'settings') renderSettings(app);
+        renderProfileCard();
+        renderGames();
+        renderCommunity();
+        renderEvents();
+        renderCalendar();
+        renderShop();
+        renderStats();
         saveState();
       }
-
-      function renderHome(app) {
-        const user = getCurrentUser();
-        const totalPosts = state.posts.length;
-        const totalUsers = state.users.length;
-        const approvedAds = state.ads.filter((ad) => ad.status === 'approved').length;
-        const totalViews = state.posts.reduce((sum, post) => sum + post.views, 0);
-        app.innerHTML = `
-          <section class="hero">
-            <div class="card hero-main">
-              <div class="eyebrow">● LIVE • ONGI • 실제 서비스형</div>
-              <h1>게임 공략, 뉴스, 커뮤니티, 광고, 멤버십까지 한 곳에서 운영합니다.</h1>
-              <p>로그인/회원가입, 게시글 작성, 댓글, 북마크, 좋아요, 프로필 커스터마이징, 멤버십 구매, 광고 등록까지 로컬스토리지 기반으로 바로 동작하는 실제형 UI입니다.</p>
-              <div class="actions">
-                <a class="btn btn-primary" href="#community" data-nav="community">커뮤니티 둘러보기</a>
-                <a class="btn btn-secondary" href="#monetization" data-nav="monetization">ONGI+ 플랜 보기</a>
-              </div>
-              <div class="stats">
-                <div class="stat-box"><span>오늘 방문자</span><strong>92,340</strong></div>
-                <div class="stat-box"><span>총 게시글</span><strong>${totalPosts}</strong></div>
-                <div class="stat-box"><span>실시간 접속자</span><strong>${totalViews}</strong></div>
-              </div>
-            </div>
-            <div class="card" style="padding: 22px; display: grid; gap: 12px;">
-              <div class="section-title">인증</div>
-              ${user ? `<div class="profile-card"><div class="avatar">${escapeHtml(user.avatar)}</div><div><h3>${escapeHtml(user.displayName)}</h3><p class="muted">${escapeHtml(user.plan.toUpperCase())} · ${escapeHtml(user.points)} 포인트</p><div class="badge-row">${user.badges.slice(0,3).map((b)=>(`<span class="badge">${escapeHtml(b)}</span>`)).join('')}</div></div></div>` : `<div class="empty-card"><p class="muted">로그인하면 프로필, 포인트, 북마크, 멤버십 상태를 바로 관리할 수 있습니다.</p><div class="actions"><a class="btn btn-primary" href="#profile" data-nav="profile">로그인 / 회원가입</a></div></div>`}
-              <div class="side-item"><strong>오늘의 인기 태그</strong><div class="chip-list"><span class="chip active">#PvP</span><span class="chip">#Build</span><span class="chip">#Guide</span><span class="chip">#Patch</span></div></div>
-              <div class="side-item"><strong>게임 할인 정보</strong><div class="line"><span>Steam Summer Sale</span><strong>−70%</strong></div><div class="line"><span>Cyberpunk 2077</span><strong>−50%</strong></div></div>
-            </div>
-          </section>
-
-          <section class="section">
-            <div class="section-head"><h2>메인 위젯</h2><span>HOT • Trending • New • Popular</span></div>
-            <div class="grid grid-4">
-              ${['HOT','Trending','New','Weekly'].map((item)=>`<div class="feature-card"><h3>${item}</h3><p class="muted">${item === 'HOT' ? '실시간 급상승 공략과 토론' : item === 'Trending' ? '크리에이터가 주목받는 콘텐츠' : item === 'New' ? '새로 올라온 게시글과 모드' : '이번 주 인기 게임과 공략'}</p></div>`).join('')}
-            </div>
-          </section>
-
-          <section class="section">
-            <div class="section-head"><h2>커뮤니티 요약</h2><span>게시글 • 댓글 • 포인트 • 광고</span></div>
-            <div class="grid grid-3">
-              <div class="panel"><h3>최근 게시글</h3><div class="divider"></div>${state.posts.slice(0,2).map((post)=>`<div class="line"><span>${escapeHtml(post.title)}</span><strong>${escapeHtml(post.category)}</strong></div>`).join('')}</div>
-              <div class="panel"><h3>유저 현황</h3><div class="divider"></div><div class="line"><span>총 유저</span><strong>${totalUsers}</strong></div><div class="line"><span>승인 광고</span><strong>${approvedAds}</strong></div><div class="line"><span>포인트 총합</span><strong>${state.users.reduce((sum,u)=>sum+u.points,0)}</strong></div></div>
-              <div class="panel"><h3>추가 기능</h3><div class="divider"></div><div class="chip-list"><span class="chip">업적</span><span class="chip">인벤토리</span><span class="chip">길드</span><span class="chip">AI 추천</span><span class="chip">출시 캘린더</span></div></div>
-            </div>
-          </section>
-        `;
-      }
-
-      function renderGames(app) {
-        const selectedGame = state.games.find((game) => game.id === state.selectedGameId) || state.games[0];
-        app.innerHTML = `
-          <section class="section">
-            <div class="section-head"><h2>게임</h2><span>Grid • List • Search • Filter • Sort</span></div>
-            <div class="card" style="padding: 18px;">
-              <div class="chip-list" style="margin-bottom: 12px;">
-                ${state.games.map((game)=>`<button class="chip ${selectedGame.id===game.id?'active':''}" data-select-game="${game.id}">${escapeHtml(game.title)}</button>`).join('')}
-              </div>
-              <div class="grid grid-3">
-                ${state.games.map((game)=>`
-                  <div class="game-card" data-select-game="${game.id}">
-                    <div class="thumb"></div>
-                    <h3>${escapeHtml(game.title)}</h3>
-                    <div class="meta">${escapeHtml(game.genre)} · ${escapeHtml(game.platform)} · ${escapeHtml(game.price)}</div>
-                    <p class="muted" style="margin-top: 8px;">${escapeHtml(game.description)}</p>
-                    <div class="tag-row">
-                      <span class="tag">${escapeHtml(game.tabs.guide)}</span>
-                      <span class="tag">${escapeHtml(game.tabs.bug)}</span>
-                      <span class="tag">${escapeHtml(game.tabs.patch)}</span>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </section>
-          <section class="section">
-            <div class="section-head"><h2>게임 상세</h2><span>공략 • 질문 • 버그 • 패치노트</span></div>
-            <div class="card" style="padding: 18px;">
-              <h3>${escapeHtml(selectedGame.title)}</h3>
-              <p class="muted" style="margin-top: 8px;">${escapeHtml(selectedGame.description)}</p>
-              <div class="divider"></div>
-              <div class="two-col">
-                <div class="panel"><h4>공략</h4><p class="muted">${escapeHtml(selectedGame.tabs.guide)}</p></div>
-                <div class="panel"><h4>버그</h4><p class="muted">${escapeHtml(selectedGame.tabs.bug)}</p></div>
-                <div class="panel"><h4>패치노트</h4><p class="muted">${escapeHtml(selectedGame.tabs.patch)}</p></div>
-                <div class="panel"><h4>플레이어 정보</h4><p class="muted">평점 ${selectedGame.rating} · 플랫폼 ${escapeHtml(selectedGame.platform)} · 가격 ${escapeHtml(selectedGame.price)}</p></div>
-              </div>
-            </div>
-          </section>
-        `;
-      }
-
-      function renderCommunity(app) {
-        const user = getCurrentUser();
-        app.innerHTML = `
-          <section class="section">
-            <div class="section-head"><h2>게시글 & 댓글</h2><span>추천 / 비추천 / 북마크 / 공유 / 신고</span></div>
-            <div class="two-col">
-              <div class="card" style="padding: 18px;">
-                <h3>게시글 작성</h3>
-                <form id="post-form" class="stack" style="margin-top: 12px;">
-                  <input class="input" name="title" placeholder="제목" required />
-                  <textarea name="body" placeholder="내용" required></textarea>
-                  <select name="category">
-                    <option value="guide">공략</option>
-                    <option value="question">질문</option>
-                    <option value="bug">버그</option>
-                    <option value="patch">패치노트</option>
-                    <option value="free">자유</option>
-                  </select>
-                  <input class="input" name="tags" placeholder="태그를 쉼표로 구분" />
-                  <button class="btn btn-primary" type="submit">게시글 등록</button>
-                </form>
-              </div>
-              <div class="card" style="padding: 18px;">
-                <h3>로그인 상태</h3>
-                <p class="muted" style="margin-top: 8px;">${user ? `${escapeHtml(user.displayName)}님이 로그인 중입니다.` : '로그인해야 게시글과 댓글을 작성할 수 있습니다.'}</p>
-                <div class="actions">
-                  ${user ? `<a class="btn btn-secondary" href="#profile" data-nav="profile">프로필 보기</a>` : `<a class="btn btn-primary" href="#profile" data-nav="profile">로그인 / 회원가입</a>`}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="section">
-            <div class="section-head"><h2>최근 게시글</h2><span>${state.posts.length}개</span></div>
-            <div class="grid">
-              ${state.posts.slice().reverse().map((post)=>`
-                <div class="post-card">
-                  <div class="line"><strong>${escapeHtml(post.title)}</strong><span class="subtle">${new Date(post.createdAt).toLocaleString('ko-KR')}</span></div>
-                  <p>${escapeHtml(post.body)}</p>
-                  <div class="tag-row">${post.tags.map((tag)=>`<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-                  <div class="actions-inline">
-                    <button class="inline-btn" data-reaction="like" data-post-id="${post.id}">👍 ${post.likes}</button>
-                    <button class="inline-btn" data-reaction="dislike" data-post-id="${post.id}">👎 ${post.dislikes}</button>
-                    <button class="inline-btn" data-bookmark="${post.id}">${post.bookmarked ? '🔖 저장됨' : '🔖 저장'}</button>
-                    <span class="subtle">조회 ${post.views}</span>
-                  </div>
-                  <div class="divider"></div>
-                  <h4>댓글</h4>
-                  ${post.comments.length ? post.comments.map((comment)=>`<div class="panel" style="margin-top: 8px;"><strong>${escapeHtml(getUserName(comment.authorId))}</strong><p class="muted" style="margin-top: 6px;">${escapeHtml(comment.body)}</p></div>`).join('') : '<p class="muted">아직 댓글이 없습니다.</p>'}
-                  <form class="stack" style="margin-top: 10px;" data-comment-form="${post.id}">
-                    <textarea name="comment" placeholder="댓글을 작성하세요" required></textarea>
-                    <button class="btn btn-secondary" type="submit">댓글 등록</button>
-                  </form>
-                </div>
-              `).join('')}
-            </div>
-          </section>
-        `;
-      }
-
-      function renderProfile(app) {
-        const user = getCurrentUser();
-        app.innerHTML = `
-          <section class="section">
-            <div class="section-head"><h2>로그인 / 회원가입 / 프로필</h2><span>로컬스토리지 기반 인증</span></div>
-            <div class="two-col">
-              <div class="card" style="padding: 18px;">
-                <h3>${user ? '프로필 관리' : '로그인'}</h3>
-                ${user ? `
-                  <div class="profile-card" style="margin-top: 12px;"><div class="avatar">${escapeHtml(user.avatar)}</div><div><h3>${escapeHtml(user.displayName)}</h3><p class="muted">${escapeHtml(user.bio)}</p><div class="badge-row">${user.badges.map((b)=>(`<span class="badge">${escapeHtml(b)}</span>`)).join('')}</div></div></div>
-                  <form id="profile-form" class="stack" style="margin-top: 14px;">
-                    <input class="input" name="displayName" value="${escapeHtml(user.displayName)}" />
-                    <input class="input" name="status" value="${escapeHtml(user.status)}" />
-                    <textarea name="bio">${escapeHtml(user.bio)}</textarea>
-                    <button class="btn btn-primary" type="submit">프로필 저장</button>
-                  </form>
-                  <div class="actions"><button class="btn btn-secondary" id="logout-btn">로그아웃</button></div>
-                ` : `
-                  <form id="login-form" class="stack" style="margin-top: 12px;">
-                    <input class="input" name="email" placeholder="이메일" required />
-                    <input class="input" name="password" type="password" placeholder="비밀번호" required />
-                    <button class="btn btn-primary" type="submit">로그인</button>
-                  </form>
-                `}
-              </div>
-              <div class="card" style="padding: 18px;">
-                <h3>${user ? '회원가입' : '신규 등록'}</h3>
-                <form id="register-form" class="stack" style="margin-top: 12px;">
-                  <input class="input" name="username" placeholder="닉네임" required />
-                  <input class="input" name="email" placeholder="이메일" required />
-                  <input class="input" name="password" type="password" placeholder="비밀번호" required />
-                  <button class="btn btn-secondary" type="submit">회원가입</button>
-                </form>
-                <div class="divider"></div>
-                <h4>포인트 & 배지</h4>
-                <p class="muted">로그인하면 출석/게시글/댓글/이벤트로 포인트를 적립하고, 프로필 커스터마이징과 상점 구매가 가능합니다.</p>
-              </div>
-            </div>
-          </section>
-        `;
-      }
-
-      function renderMonetization(app) {
-        const user = getCurrentUser();
-        const plans = [
-          { key: 'free', title: 'Free', desc: '기본 이용 · 게시글 작성 · 광고 노출' },
-          { key: 'plus', title: 'Plus', desc: '광고 제거 · 프로필 꾸미기 · 북마크 무제한' },
-          { key: 'pro', title: 'Pro', desc: 'AI 요약 · 대용량 업로드 · 예약 작성' },
-          { key: 'creator', title: 'Creator', desc: '후원 받기 · 유료 공략 · 수익 통계' }
-        ];
-        app.innerHTML = `
-          <section class="section">
-            <div class="section-head"><h2>ONGI+ 멤버십</h2><span>실제 결제 흐름 UI</span></div>
-            <div class="grid grid-2">
-              <div class="card" style="padding: 18px;">
-                <h3>플랜 선택</h3>
-                <div class="grid grid-2" style="margin-top: 12px;">
-                  ${plans.map((plan)=>`
-                    <div class="payment-card">
-                      <h4>${escapeHtml(plan.title)}</h4>
-                      <p class="muted">${escapeHtml(plan.desc)}</p>
-                      <div class="actions-inline">
-                        <button class="btn btn-primary" data-purchase-plan="${plan.key}">${user && user.plan === plan.key ? '현재 플랜' : '구매'}</button>
-                      </div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-              <div class="card" style="padding: 18px;">
-                <h3>현재 상태</h3>
-                <p class="muted" style="margin-top: 8px;">현재 플랜: <strong>${user ? escapeHtml(user.plan) : 'guest'}</strong></p>
-                <p class="muted">포인트: <strong>${user ? escapeHtml(user.points) : 0}</strong></p>
-                <div class="divider"></div>
-                <h4>광고 관리자</h4>
-                <form id="ad-form" class="stack" style="margin-top: 10px;">
-                  <input class="input" name="title" placeholder="광고 제목" required />
-                  <input class="input" name="company" placeholder="회사명" required />
-                  <input class="input" name="location" placeholder="노출 위치" required />
-                  <textarea name="description" placeholder="설명"></textarea>
-                  <button class="btn btn-secondary" type="submit">광고 등록</button>
-                </form>
-              </div>
-            </div>
-          </section>
-          <section class="section">
-            <div class="section-head"><h2>광고 대시보드</h2><span>조회수 · 클릭수 · CTR · 상태</span></div>
-            <div class="card" style="padding: 18px;">
-              <table class="table">
-                <thead><tr><th>광고</th><th>위치</th><th>조회수</th><th>클릭수</th><th>CTR</th><th>상태</th></tr></thead>
-                <tbody>
-                  ${state.ads.map((ad)=>`<tr><td>${escapeHtml(ad.title)}<div class="subtle">${escapeHtml(ad.company)}</div></td><td>${escapeHtml(ad.location)}</td><td>${ad.views}</td><td>${ad.clicks}</td><td>${ad.ctr}%</td><td><span class="status ${ad.status === 'approved' ? 'approved' : ad.status==='pending' ? 'pending' : 'rejected'}">${escapeHtml(ad.status)}</span></td></tr>`).join('')}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        `;
-      }
-
-      function renderAdmin(app) {
-        const user = getCurrentUser();
-        if (!user || user.role !== 'admin') {
-          app.innerHTML = `<section class="section"><div class="empty-card"><h3>관리자 권한이 필요합니다</h3><p class="muted">관리자 계정으로 로그인한 뒤 접근할 수 있습니다.</p></div></section>`;
-          return;
-        }
-        app.innerHTML = `
-          <section class="section">
-            <div class="section-head"><h2>관리자 UI</h2><span>회원 · 게시글 · 신고 · 게임 추가</span></div>
-            <div class="grid grid-3">
-              <div class="admin-card">
-                <h3>회원 관리</h3>
-                <table class="table" style="margin-top: 10px;">
-                  <thead><tr><th>닉네임</th><th>플랜</th></tr></thead>
-                  <tbody>
-                    ${state.users.map((u)=>`<tr><td>${escapeHtml(u.displayName)}</td><td>${escapeHtml(u.plan)}</td></tr>`).join('')}
-                  </tbody>
-                </table>
-              </div>
-              <div class="admin-card">
-                <h3>게시글 관리</h3>
-                <div class="stack" style="margin-top: 10px;">${state.posts.map((post)=>`<div class="line"><span>${escapeHtml(post.title)}</span><button class="inline-btn" data-delete-post="${post.id}">삭제</button></div>`).join('')}</div>
-              </div>
-              <div class="admin-card">
-                <h3>광고 관리</h3>
-                <div class="stack" style="margin-top: 10px;">${state.ads.map((ad)=>`<div class="line"><span>${escapeHtml(ad.title)}</span><button class="inline-btn" data-approve-ad="${ad.id}">승인</button></div>`).join('')}</div>
-              </div>
-            </div>
-          </section>
-        `;
-      }
-
-      function renderSettings(app) {
-        app.innerHTML = `
-          <section class="section">
-            <div class="section-head"><h2>설정</h2><span>테마 · 알림 · 언어 · 반응형</span></div>
-            <div class="two-col">
-              <div class="card" style="padding: 18px;">
-                <h3>UI 환경설정</h3>
-                <div class="stack" style="margin-top: 12px;">
-                  <label class="line"><span>다크모드</span><input type="radio" name="theme" value="dark" ${state.ui.theme === 'dark' ? 'checked' : ''} data-theme-set="dark" /></label>
-                  <label class="line"><span>라이트모드</span><input type="radio" name="theme" value="light" ${state.ui.theme === 'light' ? 'checked' : ''} data-theme-set="light" /></label>
-                  <label class="line"><span>컴팩트 모드</span><input type="checkbox" ${state.ui.compact ? 'checked' : ''} data-compact-set /></label>
-                  <label class="line"><span>알림 켜기</span><input type="checkbox" ${state.ui.notifications ? 'checked' : ''} data-notify-set /></label>
-                </div>
-              </div>
-              <div class="card" style="padding: 18px;">
-                <h3>계정 설정</h3>
-                <div class="chip-list" style="margin-top: 10px;">
-                  <span class="chip">프로필</span><span class="chip">비밀번호</span><span class="chip">이메일</span><span class="chip">알림</span><span class="chip">언어</span><span class="chip">차단 유저</span>
-                </div>
-              </div>
-            </div>
-          </section>
-        `;
-      }
-
-      function getUserName(userId) {
-        const user = state.users.find((u) => u.id === userId);
-        return user ? user.displayName : '익명';
-      }
-
-      function navigateTo(page) {
-        state.ui.currentPage = page;
-        window.location.hash = page;
-        renderApp();
-      }
-
-      function handleAuth(event) {
+      function handleLogin(event) {
+        event.preventDefault();
         const form = event.target;
-        if (form.id === 'login-form') {
-          event.preventDefault();
-          const email = form.email.value.trim();
-          const password = form.password.value;
-          const user = state.users.find((u) => u.email === email && u.password === password);
-          if (user) {
-            state.currentUserId = user.id;
-            alert('로그인되었습니다.');
-            navigateTo('profile');
-          } else {
-            alert('이메일 또는 비밀번호가 올바르지 않습니다.');
-          }
-        }
-        if (form.id === 'register-form') {
-          event.preventDefault();
-          const username = form.username.value.trim();
-          const email = form.email.value.trim();
-          const password = form.password.value;
-          if (!username || !email || !password) {
-            alert('모든 항목을 입력해주세요.');
-            return;
-          }
-          const exists = state.users.some((u) => u.email === email);
-          if (exists) {
-            alert('이미 가입된 이메일입니다.');
-            return;
-          }
-          const newUser = { id: `u${Date.now()}`, email, password, username, displayName: username, role: 'user', plan: 'free', points: 100, bio: '새로운 ONGI 유저입니다.', status: '안녕하세요!', avatar: '🧑', badges: ['가입 배지'], favorites: [], achievements: ['첫 가입'] };
-          state.users.push(newUser);
-          state.currentUserId = newUser.id;
-          alert('회원가입이 완료되었습니다.');
-          navigateTo('profile');
-        }
-        if (form.id === 'profile-form') {
-          event.preventDefault();
-          const user = getCurrentUser();
-          if (!user) return;
-          user.displayName = form.displayName.value.trim() || user.displayName;
-          user.status = form.status.value.trim() || user.status;
-          user.bio = form.bio.value.trim() || user.bio;
-          alert('프로필이 저장되었습니다.');
-          renderApp();
-        }
-        if (form.id === 'post-form') {
-          event.preventDefault();
-          if (!getCurrentUser()) {
-            alert('로그인 후 작성해 주세요.');
-            return;
-          }
-          const post = {
-            id: `p${Date.now()}`,
-            authorId: state.currentUserId,
-            title: form.title.value.trim(),
-            body: form.body.value.trim(),
-            category: form.category.value,
-            tags: form.tags.value.split(',').map((t) => t.trim()).filter(Boolean),
-            likes: 0,
-            dislikes: 0,
-            views: 0,
-            bookmarked: false,
-            createdAt: new Date().toISOString(),
-            comments: []
-          };
-          state.posts.push(post);
-          form.reset();
-          alert('게시글이 등록되었습니다.');
-          navigateTo('community');
-        }
-      }
-
-      function handleAppClick(event) {
-        const navTarget = event.target.closest('[data-nav]');
-        if (navTarget) {
-          event.preventDefault();
-          navigateTo(navTarget.dataset.nav);
-          return;
-        }
-        const gameTarget = event.target.closest('[data-select-game]');
-        if (gameTarget) {
-          state.selectedGameId = gameTarget.dataset.selectGame;
-          renderApp();
-          return;
-        }
-        const planTarget = event.target.closest('[data-purchase-plan]');
-        if (planTarget) {
-          const user = getCurrentUser();
-          if (!user) {
-            alert('로그인 후 이용해 주세요.');
-            return;
-          }
-          user.plan = planTarget.dataset.purchasePlan;
-          user.points += 50;
-          alert(`${planTarget.dataset.purchasePlan.toUpperCase()} 플랜을 구독했습니다.`);
-          renderApp();
-          return;
-        }
-        const deletePostTarget = event.target.closest('[data-delete-post]');
-        if (deletePostTarget) {
-          state.posts = state.posts.filter((post) => post.id !== deletePostTarget.dataset.deletePost);
-          renderApp();
-          return;
-        }
-        const approveAdTarget = event.target.closest('[data-approve-ad]');
-        if (approveAdTarget) {
-          const ad = state.ads.find((item) => item.id === approveAdTarget.dataset.approveAd);
-          if (ad) ad.status = 'approved';
-          renderApp();
-          return;
-        }
-        const reactionTarget = event.target.closest('[data-reaction]');
-        if (reactionTarget) {
-          const post = state.posts.find((item) => item.id === reactionTarget.dataset.postId);
-          if (!post) return;
-          if (reactionTarget.dataset.reaction === 'like') post.likes += 1;
-          else post.dislikes += 1;
-          renderApp();
-          return;
-        }
-        const bookmarkTarget = event.target.closest('[data-bookmark]');
-        if (bookmarkTarget) {
-          const post = state.posts.find((item) => item.id === bookmarkTarget.dataset.bookmark);
-          if (!post) return;
-          post.bookmarked = !post.bookmarked;
-          renderApp();
-          return;
-        }
-        if (event.target.id === 'logout-btn') {
-          state.currentUserId = null;
-          alert('로그아웃되었습니다.');
-          navigateTo('home');
-        }
-      }
-
-      function handleSettingsChange(event) {
-        const target = event.target;
-        if (target.matches('[data-theme-set]')) {
-          state.ui.theme = target.value;
-          renderApp();
-        }
-        if (target.matches('[data-compact-set]')) {
-          state.ui.compact = target.checked;
-          renderApp();
-        }
-        if (target.matches('[data-notify-set]')) {
-          state.ui.notifications = target.checked;
-          renderApp();
-        }
-      }
-
-      function handleSubmit(event) {
-        if (event.target.id === 'ad-form') {
-          event.preventDefault();
-          const ad = {
-            id: `ad${Date.now()}`,
-            title: event.target.title.value.trim(),
-            company: event.target.company.value.trim(),
-            location: event.target.location.value.trim(),
-            description: event.target.description.value.trim(),
-            type: 'image',
-            status: 'pending',
-            views: 0,
-            clicks: 0,
-            ctr: 0,
-            cost: 0
-          };
-          state.ads.push(ad);
-          event.target.reset();
-          alert('광고가 등록 요청되었습니다.');
-          renderApp();
-          return;
-        }
-        if (event.target.matches('[data-comment-form]')) {
-          event.preventDefault();
-          const postId = event.target.dataset.commentForm;
-          const post = state.posts.find((item) => item.id === postId);
-          if (!post) return;
-          if (!getCurrentUser()) {
-            alert('로그인 후 댓글을 작성할 수 있습니다.');
-            return;
-          }
-          post.comments.push({ id: `c${Date.now()}`, authorId: state.currentUserId, body: event.target.comment.value.trim(), createdAt: new Date().toISOString() });
-          event.target.reset();
-          renderApp();
-        }
-      }
-
-      document.addEventListener('click', handleAppClick);
-      document.addEventListener('submit', (event) => {
-        handleAuth(event);
-        handleSubmit(event);
-      });
-      document.addEventListener('change', handleSettingsChange);
-
-      window.addEventListener('hashchange', () => {
-        const hash = location.hash.replace('#', '') || 'home';
-        if (pageNames.some((page) => page.key === hash)) {
-          state.ui.currentPage = hash;
-          renderApp();
-        }
-      });
-
-      document.addEventListener('DOMContentLoaded', () => {
-        const hash = location.hash.replace('#', '') || 'home';
-        if (pageNames.some((page) => page.key === hash)) state.ui.currentPage = hash;
-        applyTheme();
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        const user = state.users.find((u) => u.email === email && u.password === password);
+        if (!user) { showToast('로그인 정보가 올바르지 않습니다.'); return; }
+        state.currentUserId = user.id;
+        showToast(`${user.displayName}님 환영합니다.`);
         renderApp();
-      });
+      }
+      function handleRegister(event) {
+        event.preventDefault();
+        const form = event.target;
+        const username = form.username.value.trim();
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        if (!username || !email || !password) { showToast('모든 항목을 채워주세요.'); return; }
+        if (state.users.some((u) => u.email === email)) { showToast('이미 가입된 이메일입니다.'); return; }
+        const newUser = { id: `u${Date.now()}`, email, password, username, displayName: username, role: 'user', plan: 'free', points: 100, bio: '새로운 ONGI 유저입니다.', status: '신규 가입', avatar: '✨', badges: ['가입 배지'], favorites: [], achievements: ['첫 가입'], inventory: [] };
+        state.users.push(newUser);
+        state.currentUserId = newUser.id;
+        showToast('회원가입이 완료되었습니다.');
+        renderApp();
+      }
+      function handleProfile(event) {
+        event.preventDefault();
+        const user = getCurrentUser();
+        if (!user) return;
+        user.status = event.target.status.value.trim() || user.status;
+        user.bio = event.target.bio.value.trim() || user.bio;
+        showToast('프로필이 저장되었습니다.');
+        renderApp();
+      }
+      function handlePost(event) {
+        event.preventDefault();
+        const user = getCurrentUser();
+        if (!user) { showToast('로그인 후 게시글을 작성할 수 있습니다.'); return; }
+        const tags = event.target.tags.value.split(',').map((t) => t.trim()).filter(Boolean);
+        const post = { id: `p${Date.now()}`, authorId: user.id, title: event.target.title.value.trim(), body: event.target.body.value.trim(), category: 'guide', tags, likes: 0, dislikes: 0, views: 0, bookmarked: false, comments: [], createdAt: new Date().toISOString() };
+        state.posts.unshift(post);
+        event.target.reset();
+        showToast('게시글이 등록되었습니다.');
+        renderApp();
+      }
+      function handleClick(event) {
+        const target = event.target.closest('button, [data-logout], [data-theme-toggle], [data-join-game], [data-claim-quest], [data-join-event], [data-buy-item], [data-reaction], [data-bookmark]');
+        if (!target) return;
+        if (target.matches('[data-logout]')) { state.currentUserId = null; showToast('로그아웃되었습니다.'); renderApp(); return; }
+        if (target.matches('[data-theme-toggle]')) { state.ui.theme = state.ui.theme === 'dark' ? 'light' : 'dark'; showToast('테마가 변경되었습니다.'); renderApp(); return; }
+        if (target.matches('[data-join-game]')) { showToast('매치 참가 요청이 접수되었습니다.'); return; }
+        if (target.matches('[data-claim-quest]')) { const quest = state.quests.find((item) => item.id === target.dataset.claimQuest); if (!quest) return; if (quest.status === 'done') { showToast('이미 수령한 퀘스트입니다.'); return; } const user = getCurrentUser(); if (!user) { showToast('로그인 후 수령할 수 있습니다.'); return; } quest.status = 'done'; user.points += 200; showToast(`${quest.title} 보상을 수령했습니다.`); renderApp(); return; }
+        if (target.matches('[data-join-event]')) { const user = getCurrentUser(); if (!user) { showToast('로그인 후 참여할 수 있습니다.'); return; } user.points += 50; showToast('이벤트 참여가 완료되었습니다.'); renderApp(); return; }
+        if (target.matches('[data-buy-item]')) { const user = getCurrentUser(); if (!user) { showToast('로그인 후 구매할 수 있습니다.'); return; } const item = state.storeItems.find((entry) => entry.id === target.dataset.buyItem); if (!item) return; if (user.points < item.price) { showToast('포인트가 부족합니다.'); return; } user.points -= item.price; user.inventory.push(item.name); showToast(`${item.name}을 구매했습니다.`); renderApp(); return; }
+        if (target.matches('[data-reaction]')) { const post = state.posts.find((item) => item.id === target.dataset.postId); if (!post) return; if (target.dataset.reaction === 'like') post.likes += 1; else post.dislikes += 1; renderApp(); return; }
+        if (target.matches('[data-bookmark]')) { const post = state.posts.find((item) => item.id === target.dataset.bookmark); if (!post) return; post.bookmarked = !post.bookmarked; showToast(post.bookmarked ? '저장되었습니다.' : '저장 해제되었습니다.'); renderApp(); return; }
+      }
+      function handleSubmit(event) {
+        if (event.target.id === 'login-form') { handleLogin(event); return; }
+        if (event.target.id === 'register-form') { handleRegister(event); return; }
+        if (event.target.id === 'profile-form') { handleProfile(event); return; }
+        if (event.target.id === 'post-form') { handlePost(event); return; }
+        if (event.target.matches('[data-comment-form]')) { event.preventDefault(); const user = getCurrentUser(); if (!user) { showToast('로그인 후 댓글을 남길 수 있습니다.'); return; } const post = state.posts.find((item) => item.id === event.target.dataset.commentForm); if (!post) return; post.comments.push({ id: `c${Date.now()}`, authorId: user.id, body: event.target.comment.value.trim() }); event.target.reset(); showToast('댓글이 등록되었습니다.'); renderApp(); }
+      }
+      function handleInput(event) {
+        if (event.target.id === 'search-posts') {
+          state.ui.searchQuery = event.target.value;
+          renderCommunity();
+        }
+      }
+      document.addEventListener('click', handleClick);
+      document.addEventListener('submit', handleSubmit);
+      document.addEventListener('input', handleInput);
+      window.addEventListener('DOMContentLoaded', () => { applyTheme(); renderApp(); });
     </script>
   </body>
 </html>
-
